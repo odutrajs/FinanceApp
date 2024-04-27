@@ -26,7 +26,7 @@ const AddExpenses = ({ budgetId, user, refreshData }) => {
     if (result) {
       refreshData();
       toast({
-        title: "Budget criado",
+        title: "Gasto criado",
       });
     }
   };
@@ -35,25 +35,19 @@ const AddExpenses = ({ budgetId, user, refreshData }) => {
     <div className="border p-5 rounded-lg">
       <h2 className="font-bold text-lg"></h2>
       <div className="mt-2">
-        <h2 className="text-black font-medium my-1">Expense Name</h2>
-        <Input
-          placeholder="e.g Home decor"
-          onChange={(e) => setName(e.target.value)}
-        />
+        <h2 className="text-black font-medium my-1">Nome do gasto</h2>
+        <Input placeholder="Ifood" onChange={(e) => setName(e.target.value)} />
       </div>
       <div className="mt-2">
-        <h2 className="text-black font-medium my-1">Expense Name</h2>
-        <Input
-          placeholder="e.g Home decor"
-          onChange={(e) => setAmount(e.target.value)}
-        />
+        <h2 className="text-black font-medium my-1">Valor do gasto</h2>
+        <Input placeholder="0" onChange={(e) => setAmount(e.target.value)} />
       </div>
       <Button
         onClick={() => addNewExpense()}
         disabled={!(name && amount)}
         className="mt-3 w-full"
       >
-        Add new Expense
+        Add novo gasto
       </Button>
     </div>
   );

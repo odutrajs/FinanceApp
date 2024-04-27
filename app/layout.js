@@ -1,7 +1,6 @@
 import { ClerkProvider } from "@clerk/nextjs";
 import { Outfit } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "../app/components/@/ui/toaster";
 
 const outfit = Outfit({ subsets: ["latin"] });
 

@@ -305,7 +305,7 @@ const Dashboard = () => {
           />
         </div>
         <div className="grid gap-5">
-          <h2 className="font-bold text-lg">Latest Budget</h2>
+          <h2 className="font-bold text-lg">Últimos gastos</h2>
           {budgetList?.map((item, index) => (
             <BudgetItem budget={item} key={index} />
           ))}

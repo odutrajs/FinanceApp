@@ -21,14 +21,12 @@ const EditBudget = ({ budgetInfo, refreshData }) => {
   const [emojiIcon, setEmojiIcon] = useState(budgetInfo?.icon);
   const [openEmojiPicker, setOpenEmojiPicker] = useState(false);
   const [name, setName] = useState();
-  const [amount, setAmount] = useState();
 
   const { toast } = useToast();
 
   useEffect(() => {
     setEmojiIcon(budgetInfo?.icon);
     setName(budgetInfo?.name);
-    setAmount(budgetInfo?.amount);
   }, [budgetInfo]);
 
   const OnUpdateBudget = async () => {
@@ -36,7 +34,6 @@ const EditBudget = ({ budgetInfo, refreshData }) => {
       .update(Budgets)
       .set({
         name: name,
-        amount: amount,
         icon: emojiIcon,
       })
       .where(eq(Budgets.id, budgetInfo.id))
@@ -45,7 +42,7 @@ const EditBudget = ({ budgetInfo, refreshData }) => {
     if (result) {
       refreshData();
       toast({
-        title: "Budget Upadated",
+        title: "Categoria editada",
       });
     }
   };
@@ -55,12 +52,12 @@ const EditBudget = ({ budgetInfo, refreshData }) => {
         <DialogTrigger asChild>
           <Button className="gap-2">
             <PenBox />
-            Edit
+            Editar
           </Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Update Budget</DialogTitle>
+            <DialogTitle>Editar Categoria</DialogTitle>
             <DialogDescription>
               <div className="mt-5">
                 <Button
@@ -88,21 +85,12 @@ const EditBudget = ({ budgetInfo, refreshData }) => {
                     onChange={(e) => setName(e.target.value)}
                   />
                 </div>
-                <div className="mt-2">
-                  <h2 className="text-black font-medium my-1">Budget Amount</h2>
-                  <Input
-                    type="number"
-                    placeholder="e.g 5000R$"
-                    defaultValue={budgetInfo?.amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                  />
-                </div>
                 <Button
-                  disabled={!(name && amount)}
+                  disabled={!name}
                   onClick={() => OnUpdateBudget()}
                   className="mt-5 w-full"
                 >
-                  Update Budget
+                  Editar Categoria
                 </Button>
               </div>
             </DialogDescription>

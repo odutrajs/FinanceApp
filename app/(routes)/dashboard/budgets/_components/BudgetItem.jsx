@@ -31,9 +31,6 @@ const BudgetItem = ({ budget }) => {
             <h2 className="text-xs text-slate-400">
               R${budget.totalSpend ? budget.totalSpend : 0} Gasto
             </h2>
-            <h2 className="text-xs text-slate-400">
-              R${budget.amount - budget.totalSpend} Orçamento
-            </h2>
           </div>
           <div className="w-full bg-slate-300 h-2 rounded-full">
             <div

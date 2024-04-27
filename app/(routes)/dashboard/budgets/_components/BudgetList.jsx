@@ -5,7 +5,7 @@ import { db } from "../../../../../utils/dbConfig";
 import { Budgets, Expenses } from "../../../../../utils/schema";
 import { useUser } from "@clerk/nextjs";
 import BudgetItem from "./BudgetItem";
-import { desc, eq, getTableColumns, sql } from "drizzle-orm";
+import { eq, getTableColumns, sql } from "drizzle-orm";
 
 const BudgetList = () => {
   const [budgetList, setBudgetList] = useState();
