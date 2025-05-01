@@ -6,7 +6,10 @@ interface IphoneMockupProps {
   alt?: string;
 }
 
-const IphoneMockup = ({ imageSrc, alt = "iPhone screen" }: IphoneMockupProps) => {
+const IphoneMockup = ({
+  imageSrc,
+  alt = "iPhone screen",
+}: IphoneMockupProps) => {
   return (
     <div className="relative border-gray-800 bg-gray-800 border-[14px] rounded-[2.5rem] h-[600px] w-[300px] shadow-xl">
       {/* Botões laterais esquerdos */}
