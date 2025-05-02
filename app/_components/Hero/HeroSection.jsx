@@ -21,18 +21,11 @@ const HeroSection = () => {
           </p>
 
           <div className="mt-10 flex justify-center gap-6 flex-wrap">
-            <div className="rounded-[2rem] overflow-hidden">
-              <IphoneMockup
-                imageSrc="/printIphone1.jpeg"
-                alt="Conversa com GranaZen"
-              />
-            </div>
-            <div className="rounded-[2rem] overflow-hidden">
-              <IphoneMockup
-                imageSrc="/screenChart.png"
-                alt="Resumo financeiro"
-              />
-            </div>
+            <IphoneMockup
+              imageSrc="/printIphone1.jpeg"
+              alt="Conversa com GranaZen"
+            />
+            <IphoneMockup imageSrc="/screenChart.png" alt="Resumo financeiro" />
           </div>
 
           <div className="mt-8 flex flex-wrap justify-center gap-4">
