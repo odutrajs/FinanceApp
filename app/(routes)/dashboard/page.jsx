@@ -1,318 +1,238 @@
 "use client";
-import axios from "axios";
-import { useUser } from "@clerk/nextjs";
-import React, { useEffect, useState } from "react";
-import CardInfo from "./_components/CardInfo";
-import { and, eq, getTableColumns, gte, lte, sql } from "drizzle-orm";
+
+import React from "react";
 import {
-  Budgets,
-  Contribution,
-  Expenses,
-  Goals,
-  Investiment,
-  Wage,
-} from "../../../utils/schema";
-import { db } from "../../../utils/dbConfig";
-import BarChartDashboard from "./_components/BarChart";
-import BudgetItem from "./budgets/_components/BudgetItem";
-import ExpenseListTable from "./expenses/[id]/_components/ExpenseListTable";
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "../../components/@/ui/card";
+import { ArrowDown, ArrowUp, Eye } from "lucide-react";
+import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import Header from "../../_components/Header";
 
-import { formatDateToBrazilian } from "../../../utils/formatBrasilianDate";
+export default function DashboardCards() {
+  const receitas = 20;
+  const despesas = 116.4;
+  const saldoAtual = 17828.6;
 
-const Dashboard = () => {
-  const { user } = useUser();
-  const [budgetList, setBudgetList] = useState();
-  const [expenseList, setExpenseList] = useState();
-  const [wage, setWage] = useState();
-  const [investiment, setInvestment] = useState();
-  const [income, setIncome] = useState();
-  const [contribution, setContribution] = useState();
-  const [goal, setGoal] = useState();
-  const [dailyCDIRate, setDailyCDIRate] = useState();
-  const [shortTerm, setShortTerm] = useState();
-  const [midTerm, setMidTerm] = useState();
-  const [longTerm, setLongTerm] = useState();
-  const [expenseMonth, setExpenseMonth] = useState();
-  console.log("expenseMonth", expenseMonth);
+  const transacoes = [
+    {
+      titulo: "Doação Hoje",
+      valor: 44.0,
+      tipo: "despesa",
+      categoria: "Doações",
+      data: "01/05/2025",
+      cor: "#06b6d4",
+    },
+    {
+      titulo: "Farmácia",
+      valor: 35.0,
+      tipo: "despesa",
+      categoria: "Saúde",
+      data: "01/05/2025",
+      cor: "#facc15",
+    },
+    {
+      titulo: "Shampoo",
+      valor: 12.4,
+      tipo: "despesa",
+      categoria: "Cuidados Pessoais",
+      data: "01/05/2025",
+      cor: "#9333ea",
+    },
+    {
+      titulo: "Uber",
+      valor: 5.0,
+      tipo: "despesa",
+      categoria: "Transporte",
+      data: "01/05/2025",
+      cor: "#047857",
+    },
+    {
+      titulo: "Remédio 2",
+      valor: 20.0,
+      tipo: "despesa",
+      categoria: "Saúde",
+      data: "01/05/2025",
+      cor: "#facc15",
+    },
+    {
+      titulo: "Recebido Valor",
+      valor: 20.0,
+      tipo: "receita",
+      categoria: "Outros",
+      data: "01/05/2025",
+      cor: "#000000",
+    },
+  ];
 
-  useEffect(() => {
-    user && getBudgetList();
-    getWage();
-    getInvestiment();
-    getContribution();
-    getGoals();
-    getExpensePerDate();
-  }, [user]);
+  const despesasTotais = transacoes.filter((t) => t.tipo === "despesa");
+  const totalDespesas = despesasTotais.reduce((sum, t) => sum + t.valor, 0);
 
-  useEffect(() => {
-    fetchCDIRate();
-  }, []);
-
-  const getBudgetList = async () => {
-    const result = await db
-      .select({
-        ...getTableColumns(Budgets),
-        totalSpend: sql`sum(${Expenses.amount})`.mapWith(Number),
-        totalItem: sql`count(${Expenses.id})`.mapWith(Number),
-      })
-      .from(Budgets)
-      .leftJoin(Expenses, eq(Budgets.id, Expenses.budgetId))
-      .where(eq(Budgets.createdBy, user?.primaryEmailAddress?.emailAddress))
-      .groupBy(Budgets.id);
-
-    setBudgetList(result);
-    getAllExpenses();
-  };
-
-  const getAllExpenses = async () => {
-    const result = await db
-      .select({
-        id: Expenses.id,
-        name: Expenses.name,
-        amount: Expenses.amount,
-        createdAt: Expenses.createdAt,
-      })
-      .from(Budgets)
-      .rightJoin(Expenses, eq(Budgets.id, Expenses.budgetId))
-      .where(eq(Budgets.createdBy, user?.primaryEmailAddress.emailAddress));
-
-    setExpenseList(result);
-  };
-
-  const getWage = async () => {
-    const result = await db
-      .select()
-      .from(Wage)
-      .where(eq(Wage.createdBy, user?.primaryEmailAddress?.emailAddress));
-    setWage(result);
-  };
-  const getContribution = async () => {
-    const result = await db
-      .select()
-      .from(Contribution)
-      .where(
-        eq(Contribution.createdBy, user?.primaryEmailAddress?.emailAddress)
-      );
-    setContribution(result[0]?.value);
-  };
-
-  const getInvestiment = async () => {
-    const result = await db
-      .select()
-      .from(Investiment)
-      .where(
-        eq(Investiment.createdBy, user?.primaryEmailAddress?.emailAddress)
-      );
-    setInvestment(result);
-    calculateMonthlyReturn(result[0]?.value);
-  };
-  const getGoals = async () => {
-    const result = await db
-      .select()
-      .from(Goals)
-      .where(eq(Goals.createdBy, user?.primaryEmailAddress?.emailAddress));
-    setGoal(result);
-  };
-
-  const getExpensePerDate = async () => {
-    const now = new Date();
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-    const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-
-    const startOfMonthFormatted = formatDateToBrazilian(
-      startOfMonth.toISOString().split("T")[0]
-    );
-    const endOfDayFormatted = formatDateToBrazilian(
-      endOfDay.toISOString().split("T")[0]
-    );
-
-    const result = await db
-      .select({
-        id: Expenses.id,
-        name: Expenses.name,
-        amount: Expenses.amount,
-        createdAt: Expenses.createdAt,
-      })
-      .from(Expenses)
-      .where(
-        and(
-          eq(Expenses.createdBy, user?.primaryEmailAddress.emailAddress),
-          gte(Expenses.createdAt, startOfMonthFormatted),
-          lte(Expenses.createdAt, endOfDayFormatted)
-        )
-      )
-      .execute();
-
-    setExpenseMonth(result);
-  };
-
-  async function fetchCDIRate() {
-    try {
-      const response = await axios.get(
-        "https://api.bcb.gov.br/dados/serie/bcdata.sgs.12/dados?formato=json"
-      );
-      const cdiRate = parseFloat(
-        response?.data[response.data.length - 1].valor
-      );
-      setDailyCDIRate(cdiRate / 100);
-      return cdiRate / 100;
-    } catch (error) {
-      console.error("Erro ao buscar a taxa do CDI:", error);
-      return null;
+  const despesasPorCategoria = despesasTotais.reduce((acc, curr) => {
+    if (!acc[curr.categoria]) {
+      acc[curr.categoria] = { name: curr.categoria, value: 0, cor: curr.cor };
     }
-  }
+    acc[curr.categoria].value += curr.valor;
+    return acc;
+  }, {});
 
-  async function calculateMonthlyReturn(principal, daysInMonth = 22) {
-    try {
-      const dailyCDIRate = await fetchCDIRate();
-      if (dailyCDIRate === null) {
-        throw new Error("Não foi possível obter a taxa do CDI.");
-      }
-
-      const monthlyRate = (1 + dailyCDIRate) ** daysInMonth - 1;
-      const monthlyReturn = principal * (1 + monthlyRate) - principal;
-      setIncome(monthlyReturn.toFixed(2));
-    } catch (error) {
-      console.error("Erro ao calcular o retorno mensal:", error);
-    }
-  }
-
-  useEffect(() => {
-    if (
-      dailyCDIRate !== undefined &&
-      investiment?.length > 0 &&
-      goal?.length > 0
-    ) {
-      let months = 0;
-      let currentInvestment = parseFloat(investiment[0]?.value);
-
-      if (isNaN(currentInvestment) || currentInvestment <= 0) {
-        console.error("Valor inicial de investimento inválido");
-        return;
-      }
-
-      let daysInMonth = 23;
-      const targetGoal = parseFloat(goal[0]?.shortTerm);
-
-      while (currentInvestment < targetGoal) {
-        const monthlyRate = (1 + dailyCDIRate) ** daysInMonth - 1;
-        const monthlyReturn = currentInvestment * monthlyRate;
-
-        currentInvestment += monthlyReturn + (parseFloat(contribution) || 0);
-
-        months++;
-      }
-
-      setShortTerm(months);
-      console.log(
-        `Serão necessários ${months} meses para atingir R$ ${targetGoal}`
-      );
-    }
-  }, [dailyCDIRate, investiment, goal, contribution]);
-
-  useEffect(() => {
-    if (
-      dailyCDIRate !== undefined &&
-      investiment?.length > 0 &&
-      goal?.length > 0
-    ) {
-      let months = 0;
-      let currentInvestment = parseFloat(investiment[0]?.value);
-
-      if (isNaN(currentInvestment) || currentInvestment <= 0) {
-        console.error("Valor inicial de investimento inválido");
-        return;
-      }
-
-      let daysInMonth = 23;
-      const targetGoal = parseFloat(goal[0]?.midTerm);
-
-      while (currentInvestment < targetGoal) {
-        const monthlyRate = (1 + dailyCDIRate) ** daysInMonth - 1;
-        const monthlyReturn = currentInvestment * monthlyRate;
-
-        currentInvestment += monthlyReturn + (parseFloat(contribution) || 0);
-
-        months++;
-      }
-
-      setMidTerm(months);
-      console.log(
-        `Serão necessários ${months} meses para atingir R$ ${targetGoal}`
-      );
-    }
-  }, [dailyCDIRate, investiment, goal, contribution]);
-
-  useEffect(() => {
-    if (
-      dailyCDIRate !== undefined &&
-      investiment?.length > 0 &&
-      goal?.length > 0
-    ) {
-      let months = 0;
-      let currentInvestment = parseFloat(investiment[0]?.value);
-
-      if (isNaN(currentInvestment) || currentInvestment <= 0) {
-        console.error("Valor inicial de investimento inválido");
-        return;
-      }
-
-      let daysInMonth = 23;
-      const targetGoal = parseFloat(goal[0]?.longTerm);
-
-      while (currentInvestment < targetGoal) {
-        const monthlyRate = (1 + dailyCDIRate) ** daysInMonth - 1;
-        const monthlyReturn = currentInvestment * monthlyRate;
-
-        currentInvestment += monthlyReturn + (parseFloat(contribution) || 0);
-
-        months++;
-      }
-
-      setLongTerm(months);
-      console.log(
-        `Serão necessários ${months} meses para atingir R$ ${targetGoal}`
-      );
-    }
-  }, [dailyCDIRate, investiment, goal, contribution]);
+  const chartData = Object.values(despesasPorCategoria).map((item) => ({
+    ...item,
+    percent: ((item.value / totalDespesas) * 100).toFixed(2),
+  }));
 
   return (
-    <div className="p-5">
-      <h2 className="font-bold text-3xl">Hi, {user?.fullName} </h2>
-      <p className="text-gray-500">
-        Aqui está sua administração do dinheiro, faça sua gestão
-      </p>
-      <CardInfo
-        budgetList={budgetList}
-        wage={wage}
-        investiment={investiment}
-        income={income}
-        contribution={contribution}
-        shortTerm={shortTerm}
-        shortTermGoal={goal && goal[0]?.shortTerm}
-        midTermGoal={goal && goal[0]?.midTerm}
-        midTerm={midTerm}
-        longTermGoal={goal && goal[0]?.longTerm}
-        longTerm={longTerm}
-        expenseMonth={expenseMonth && expenseMonth}
-      />
-      <div className="grid grid-cols-1 md:grid-cols-3 mt-6 gap-5">
-        <div className="md:col-span-2">
-          <BarChartDashboard budgetList={budgetList} />
-          <ExpenseListTable
-            expensesList={expenseList}
-            refresData={() => getBudgetList()}
-          />
+    <>
+      <Header />
+      <div className="p-6 space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <Card className="rounded-2xl">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm text-green-600">Receitas</CardTitle>
+            </CardHeader>
+            <CardContent className="flex justify-between items-center">
+              <div>
+                <p className="text-green-600 text-xl font-semibold flex items-center gap-1">
+                  <ArrowUp className="w-4 h-4" /> R$ {receitas.toFixed(2)}
+                </p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  1 De Maio - 31 De Maio
+                </p>
+              </div>
+              <Eye className="text-muted-foreground w-4 h-4" />
+            </CardContent>
+          </Card>
+
+          <Card className="rounded-2xl">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm text-red-600">Despesas</CardTitle>
+            </CardHeader>
+            <CardContent className="flex justify-between items-center">
+              <div>
+                <p className="text-red-600 text-xl font-semibold flex items-center gap-1">
+                  <ArrowDown className="w-4 h-4" /> R$ {despesas.toFixed(2)}
+                </p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  1 De Maio - 31 De Maio
+                </p>
+              </div>
+              <Eye className="text-muted-foreground w-4 h-4" />
+            </CardContent>
+          </Card>
+
+          <Card className="rounded-2xl">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm text-blue-600">
+                Saldo Atual
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-blue-600 text-xl font-semibold">
+                R$ {saldoAtual.toFixed(2)}
+              </p>
+              <p className="text-xs text-muted-foreground mt-1">
+                Até 31 De Maio
+              </p>
+            </CardContent>
+          </Card>
         </div>
-        <div className="grid gap-5">
-          <h2 className="font-bold text-lg">Últimos gastos</h2>
-          {budgetList?.map((item, index) => (
-            <BudgetItem budget={item} key={index} />
-          ))}
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <Card className="lg:col-span-2">
+            <CardHeader>
+              <CardTitle className="text-base font-semibold">
+                Transações
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {transacoes.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="flex justify-between items-center border rounded-lg px-4 py-3"
+                >
+                  <div>
+                    <p className="font-medium">{item.titulo}</p>
+                    <div className="flex gap-2 mt-1">
+                      <span className="text-xs text-muted-foreground">TH</span>
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-800">
+                        Pago
+                      </span>
+                      <span
+                        className={`text-xs px-2 py-0.5 rounded-full text-white`}
+                        style={{ backgroundColor: item.cor }}
+                      >
+                        {item.categoria}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p
+                      className={`font-semibold text-sm ${
+                        item.tipo === "receita"
+                          ? "text-green-600"
+                          : "text-red-600"
+                      }`}
+                    >
+                      R$ {item.valor.toFixed(2)}
+                    </p>
+                    <p className="text-xs text-muted-foreground">{item.data}</p>
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base font-semibold">
+                Gráfico de Despesas
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <ResponsiveContainer width="100%" height={250}>
+                <PieChart>
+                  <Pie
+                    dataKey="value"
+                    data={chartData}
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={80}
+                    label={({ name, percent }) => `${name} (${percent}%)`}
+                  >
+                    {chartData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.cor} />
+                    ))}
+                  </Pie>
+                </PieChart>
+              </ResponsiveContainer>
+              <div className="space-y-2">
+                {chartData.map((item, index) => (
+                  <div
+                    key={index}
+                    className="flex justify-between text-sm items-center"
+                  >
+                    <div className="flex items-center gap-2">
+                      <div
+                        className="w-4 h-4 rounded-sm"
+                        style={{ backgroundColor: item.cor }}
+                      ></div>
+                      <span>{item.name}</span>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-medium">R$ {item.value.toFixed(2)}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {item.percent}%
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
-    </div>
+    </>
   );
-};
-
-export default Dashboard;
+}
