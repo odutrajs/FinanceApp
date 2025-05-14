@@ -43,7 +43,7 @@ const Header = () => {
             height={56}
             className="object-contain"
           />
-          <span className="text-white text-xl font-bold tracking-wide">
+          <span className="hidden sm:inline text-white text-xl font-bold tracking-wide">
             Dona Grana
           </span>
         </Link>

@@ -163,7 +163,7 @@ const SignUpFlow = () => {
                 <button
                   type="button"
                   onClick={nextStep}
-                  className="w-full mt-4 bg-green-600 text-white h-11 rounded-xl hover:bg-green-700 transition"
+                  className="w-full mt-2 bg-green-600 text-white h-11 rounded-xl hover:bg-green-700 transition"
                 >
                   Continuar
                 </button>
@@ -215,14 +215,14 @@ const SignUpFlow = () => {
                   <button
                     type="button"
                     onClick={prevStep}
-                    className="w-full text-gray-600 h-11 rounded-xl border border-gray-400"
+                    className="w-full mt-2 h-11 rounded-xl border border-gray-400 text-gray-700 bg-white hover:bg-gray-100 transition"
                   >
                     Voltar
                   </button>
                   <button
                     type="button"
                     onClick={nextStep}
-                    className="w-full bg-green-600 text-white h-11 rounded-xl hover:bg-green-700 transition"
+                    className="w-full mt-2 bg-green-600 text-white h-11 rounded-xl hover:bg-green-700 transition"
                   >
                     Continuar
                   </button>
@@ -267,14 +267,14 @@ const SignUpFlow = () => {
                   <button
                     type="button"
                     onClick={prevStep}
-                    className="w-full text-gray-600 h-11 rounded-xl border border-gray-400"
+                    className="w-full mt-2 text-gray-600 h-11 rounded-xl border border-gray-400"
                   >
                     Voltar
                   </button>
                   <button
                     type="button"
                     onClick={nextStep}
-                    className="w-full bg-green-600 text-white h-11 rounded-xl hover:bg-green-700 transition"
+                    className="w-full mt-2 bg-green-600 text-white h-11 rounded-xl hover:bg-green-700 transition"
                   >
                     Continuar
                   </button>
@@ -349,14 +349,14 @@ const SignUpFlow = () => {
                   <button
                     type="button"
                     onClick={prevStep}
-                    className="w-full text-gray-600 h-11 rounded-xl border border-gray-400"
+                    className="w-full mt-2 text-gray-600 h-11 rounded-xl border border-gray-400"
                   >
                     Voltar
                   </button>
                   <button
                     type="button"
                     onClick={nextStep}
-                    className="w-full bg-green-600 text-white h-11 rounded-xl hover:bg-green-700 transition"
+                    className="w-full mt-2 bg-green-600 text-white h-11 rounded-xl hover:bg-green-700 transition"
                   >
                     Continuar
                   </button>

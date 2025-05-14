@@ -53,8 +53,8 @@ export default function Page() {
   };
 
   return (
-    <section className="bg-[#FDF6EC]">
-      <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
+    <section className="min-h-screen bg-[#FDF6EC] flex flex-col">
+      <div className="flex-grow lg:grid lg:grid-cols-12">
         <section className="relative flex h-32 items-end bg-[#2F855A] lg:col-span-5 lg:h-full xl:col-span-6">
           <div className="absolute inset-0 bg-[#2F855A]" />
           <div className="hidden lg:relative lg:block lg:p-12 z-10">
