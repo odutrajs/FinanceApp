@@ -80,7 +80,7 @@ const FeatureSection = () => {
 
           <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
             <Image
-              src="/dashboardC.png"
+              src="/dash.png"
               alt="Gráficos financeiros"
               width={700}
               height={500}
