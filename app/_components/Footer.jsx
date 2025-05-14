@@ -6,8 +6,8 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
         {/* Coluna 1 - Marca */}
         <div>
-          <h3 className="text-lg font-bold mb-2">GranaZen</h3>
-          <p>© 2025 GranaZen. Todos os direitos reservados.</p>
+          <h3 className="text-lg font-bold mb-2">DonaGrana</h3>
+          <p>© 2025 DonaGrana. Todos os direitos reservados.</p>
         </div>
 
         {/* Coluna 2 - Contato */}
@@ -18,10 +18,10 @@ const Footer = () => {
               📞 <span>(41) 99259-3302</span>
             </li>
             <li className="flex items-center gap-2">
-              ✉️ <span>contato@granazen.com</span>
+              ✉️ <span>contato@donagrana.com</span>
             </li>
             <li className="flex items-center gap-2">
-              📷 <span>@granazen_</span>
+              📷 <span>@donagrana</span>
             </li>
           </ul>
         </div>

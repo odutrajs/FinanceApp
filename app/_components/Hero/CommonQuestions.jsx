@@ -16,10 +16,10 @@ const CommonQuestions = () => {
     {
       title: "Quais categorias de gastos posso adicionar?",
       description:
-        "O GranaZen categoriza seus gastos em diversas áreas, como alimentação, transporte, e muito mais.",
+        "O Dona Grana categoriza seus gastos em diversas áreas, como alimentação, transporte, e muito mais.",
     },
     {
-      title: "É seguro usar o GranaZen?",
+      title: "É seguro usar o Dona Grana?",
       description:
         "Sim! Priorizamos a segurança dos seus dados e garantimos total privacidade.",
     },

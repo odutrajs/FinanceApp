@@ -23,39 +23,38 @@ const FeatureSection = () => {
       title: "Sem tempo para digitar?",
       icon: Rocket,
       description:
-        "Com o GranaZen, você pode adicionar despesas e receitas enviando apenas um áudio ou uma foto pelo WhatsApp. Praticidade total!",
+        "Com o Dona Grana, você pode adicionar despesas e receitas enviando apenas um áudio ou uma foto pelo WhatsApp. Praticidade total!",
     },
     {
       title: "Esquece de pagar contas?",
       icon: Settings,
       description:
-        "O GranaZen te lembra automaticamente dos seus pagamentos. Basta dizer 'Me lembre de pagar a conta de luz amanhã no valor de 100 reais' e pronto!",
+        "O Dona Grana te lembra automaticamente dos seus pagamentos. Basta dizer 'Me lembre de pagar a conta de luz amanhã no valor de 100 reais' e pronto!",
     },
     {
       title: "Não sabe para onde vai o seu dinheiro?",
       icon: Star,
       description:
-        "A Inteligência Artificial do GranaZen categoriza automaticamente seus gastos e receitas, dando clareza às suas finanças.",
+        "A Inteligência Artificial do Dona Grana categoriza automaticamente seus gastos e receitas, dando clareza às suas finanças.",
     },
     {
       title: "Dificuldade em acompanhar suas finanças?",
       icon: TrendingUp,
       description:
-        "Com o GranaZen, você acessa relatórios e gráficos detalhados via um sistema web intuitivo.",
+        "Com o Dona Grana, você acessa relatórios e gráficos detalhados via um sistema web intuitivo.",
     },
     {
       title: "Segurança dos seus dados",
       icon: Users,
       description:
-        "O GranaZen garante máxima segurança e privacidade para suas informações financeiras.",
+        "O Dona Grana garante máxima segurança e privacidade para suas informações financeiras.",
     },
   ];
   return (
     <>
-      <section className="w-full bg-green-500 pt-20 pb-16 px-6 text-white flex flex-col items-center">
+      <section className="w-full bg-[#2F855A] pt-20 pb-16 px-6 text-white flex flex-col items-center">
         <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-center mb-6 leading-tight">
-          Visualize Suas Finanças
-          <br className="hidden sm:block" /> De Forma Inteligente
+          Visualize Suas Finanças de Forma Inteligente
         </h2>
 
         <div className="max-w-6xl w-full flex flex-col lg:flex-row justify-between items-center gap-10">
@@ -64,16 +63,16 @@ const FeatureSection = () => {
               Gráficos Interativos no Sistema Web
             </h3>
             <ul className="space-y-2">
-              <li className="flex items-start gap-2">
-                <span className="text-2xl">🕒</span>
+              <li className="flex items-start gap-3">
+                <span className="text-green-100">•</span>
                 <span>Distribuição de gastos por categoria</span>
               </li>
-              <li className="flex items-start gap-2">
-                <span className="text-2xl">📈</span>
+              <li className="flex items-start gap-3">
+                <span className="text-green-100">•</span>
                 <span>Visualização do saldo</span>
               </li>
-              <li className="flex items-start gap-2">
-                <span className="text-2xl">📊</span>
+              <li className="flex items-start gap-3">
+                <span className="text-green-100">•</span>
                 <span>Comparativo de receitas e despesas mensais</span>
               </li>
             </ul>
@@ -81,7 +80,7 @@ const FeatureSection = () => {
 
           <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
             <Image
-              src="/dashboard.png"
+              src="/dashboardC.png"
               alt="Gráficos financeiros"
               width={700}
               height={500}
@@ -91,10 +90,10 @@ const FeatureSection = () => {
         </div>
       </section>
 
-      <section className="pt-16 pb-10 bg-white text-black">
+      <section className="pt-16 pb-10 bg-[#FDF6EC] text-[#2D2D2D]">
         <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-bold text-center mb-7 text-black">
-            Funcionalidades do NOMEDAEMPRESA
+          <h2 className="text-2xl font-bold text-center mb-7">
+            Funcionalidades do Dona Grana
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {features.map((feature, index) => (
@@ -109,19 +108,19 @@ const FeatureSection = () => {
         </div>
       </section>
 
-      <section className="w-full bg-green-500 pt-16 pb-10 px-6 text-white flex flex-col items-center text-center">
+      <section className="w-full bg-[#2F855A] pt-16 pb-10 px-6 text-white flex flex-col items-center text-center">
         <h2 className="text-3xl sm:text-4xl font-extrabold leading-tight mb-4">
           Simplifique suas Finanças Agora!
         </h2>
         <p className="text-lg sm:text-xl mb-6">
-          Não perca mais tempo com planilhas! Junte-se ao GranaZen e tenha
+          Não perca mais tempo com planilhas! Junte-se ao Dona Grana e tenha
           controle total das suas finanças.
         </p>
         <a
-          href="/dashboard"
-          className="bg-black hover:bg-gray-900 text-white font-semibold text-sm px-8 py-3 rounded-full shadow-md transition-all duration-200"
+          href="/sign-up"
+          className="bg-[#2D2D2D] hover:bg-[#1F1F1F] text-white font-semibold text-sm px-8 py-3 rounded-full shadow-md transition-all duration-200"
         >
-          Experimente GranaZen Gratuitamente!
+          Experimente Dona Grana!
         </a>
       </section>
     </>

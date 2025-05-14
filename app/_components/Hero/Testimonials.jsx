@@ -15,14 +15,14 @@ const Testimonials = () => {
               title: "Software developer",
               image: "/jofreThomas.jpeg",
               comment:
-                "O GranaZen revolucionou a forma como gerencio as finanças do meu negócio. É simples, rápido e muito eficiente!",
+                "O Dona Grana revolucionou a forma como gerencio as finanças do meu negócio. É simples, rápido e muito eficiente!",
             },
             {
               name: "Yuri Gonçalves",
               title: "Empresário",
               image: "/yuri.jpeg",
               comment:
-                "Eu costumava esquecer de registrar meus gastos, mas com o GranaZen, consigo adicionar tudo direto pelo WhatsApp!",
+                "Eu costumava esquecer de registrar meus gastos, mas com o Dona Grana, consigo adicionar tudo direto pelo WhatsApp!",
             },
             {
               name: "Pedro Elpídio",

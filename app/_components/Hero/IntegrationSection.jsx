@@ -2,7 +2,7 @@ import React from "react";
 
 const IntegrationSection = () => {
   return (
-    <section className="w-full bg-white py-20 px-6">
+    <section className="w-full bg-[#FDF6EC] py-20 px-6">
       <h2 className="text-2xl sm:text-3xl font-extrabold text-center text-gray-900 mb-14">
         Sua segurança é nossa prioridade
       </h2>
@@ -18,8 +18,8 @@ const IntegrationSection = () => {
           </h3>
           <p className="text-sm text-gray-600">
             O WhatsApp utiliza criptografia de ponta a ponta em todas as
-            mensagens, garantindo que apenas você e o GranaZen tenham acesso às
-            suas mensagens.
+            mensagens, garantindo que apenas você e o Dona Grana tenham acesso
+            às suas mensagens.
           </p>
         </div>
 

@@ -1,6 +1,11 @@
+"use client";
+
 import React from "react";
+import { useRouter } from "next/navigation";
 
 const PlansSection = () => {
+  const router = useRouter();
+
   return (
     <section className="w-full bg-gray-50 pt-5 pb-20 px-4">
       <h2 className="text-3xl sm:text-4xl font-extrabold text-center text-gray-800 mb-12">
@@ -14,7 +19,7 @@ const PlansSection = () => {
             <div className="bg-orange-500 text-white text-sm font-semibold px-4 py-1 rounded-full w-fit mb-3">
               Plano Mensal
             </div>
-            <h3 className="text-xl font-bold mb-1">GranaZen Mensal</h3>
+            <h3 className="text-xl font-bold mb-1">Dona Grana Mensal</h3>
             <p className="text-gray-500 mb-4">
               Ideal para quem quer começar sem compromisso.
             </p>
@@ -30,12 +35,13 @@ const PlansSection = () => {
               <li>✅ Acesso ao sistema via WhatsApp</li>
               <li>✅ Categorias personalizadas</li>
               <li>✅ Gráficos e relatórios</li>
-              <li>✅ Suporte por WhatsApp</li>
-              <li>❌ Gestão compartilhada</li>
-              <li>❌ Exportação de dados</li>
+              <li>✅ Inteligência artificial</li>
             </ul>
           </div>
-          <button className="mt-8 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 rounded-lg">
+          <button
+            onClick={() => router.push("/sign-up")}
+            className="mt-8 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 rounded-lg"
+          >
             Assinar Mensal
           </button>
         </div>
@@ -46,27 +52,29 @@ const PlansSection = () => {
             <div className="bg-orange-500 text-white text-sm font-semibold px-4 py-1 rounded-full w-fit mb-3">
               🔥 Mais vantajoso
             </div>
-            <h3 className="text-xl font-bold mb-1">GranaZen Anual</h3>
+            <h3 className="text-xl font-bold mb-1">Dona Grana Anual</h3>
             <p className="text-gray-400 mb-4">
               Economize e tenha acesso completo por 1 ano!
             </p>
             <div className="bg-green-700 text-white text-sm font-semibold px-4 py-1 rounded-full w-fit mb-4">
               🥳 3 dias grátis
             </div>
-            <div className="text-3xl font-extrabold mb-1">R$ 214,92</div>
+            <div className="text-3xl font-extrabold mb-1">R$ 199,00</div>
             <p className="text-sm text-green-400 mb-6">
-              Economia de R$ 23,88 por ano
+              Economia de R$ 40,00 por ano
             </p>
             <h4 className="font-semibold mb-3">RECURSOS INCLUÍDOS</h4>
             <ul className="space-y-2 text-sm text-white">
               <li>✅ Tudo do plano mensal</li>
-              <li>✅ Exportação de dados</li>
-              <li>✅ Lembretes e automações</li>
               <li>✅ Acesso ilimitado ao painel</li>
               <li>✅ Prioridade no suporte</li>
+              <li>✅ Inteligência artificial aprimorada</li>
             </ul>
           </div>
-          <button className="mt-8 bg-white text-black font-semibold py-2 rounded-lg hover:bg-gray-100">
+          <button
+            onClick={() => router.push("/sign-up")}
+            className="mt-8 bg-white text-black font-semibold py-2 rounded-lg hover:bg-gray-100"
+          >
             Assinar Anual
           </button>
         </div>
