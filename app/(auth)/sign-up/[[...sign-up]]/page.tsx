@@ -23,6 +23,8 @@ type FormData = {
 
 const SignUpFlow = () => {
   const [step, setStep] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const { toast } = useToast();
 
   const { mutateAsync: startCheckoutSession } = useCreateStripeSession();
@@ -67,20 +69,26 @@ const SignUpFlow = () => {
   const emailRef = useRef<HTMLInputElement | null>(null);
 
   const onSubmit = async (data: FormData) => {
-    const payload = {
-      ...data,
-      phone: formatCellphone(data.phone),
-    };
+    setIsSubmitting(true);
 
-    const user = await createUserMutate(payload);
-    console.log(user);
+    try {
+      const payload = {
+        ...data,
+        phone: formatCellphone(data.phone),
+      };
 
-    const { sessionUrl } = await startCheckoutSession({
-      userId: user.userId,
-      paymentRecurrent: getValues("paymentRecurrent"),
-    });
+      const user = await createUserMutate(payload);
+      const { sessionUrl } = await startCheckoutSession({
+        userId: user.userId,
+        paymentRecurrent: getValues("paymentRecurrent"),
+      });
 
-    window.location.href = sessionUrl;
+      window.location.href = sessionUrl;
+    } catch (error) {
+      // O toast de erro já é tratado nas mutations
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const nextStep = async () => {
@@ -453,9 +461,14 @@ const SignUpFlow = () => {
                   </button>
                   <button
                     type="submit"
-                    className="w-full bg-green-600 text-white h-11 rounded-xl hover:bg-green-700 transition"
+                    disabled={isSubmitting}
+                    className={`w-full h-11 rounded-xl transition ${
+                      isSubmitting
+                        ? "bg-gray-400 cursor-not-allowed"
+                        : "bg-green-600 text-white hover:bg-green-700"
+                    }`}
                   >
-                    Finalizar e Pagar
+                    {isSubmitting ? "Processando..." : "Finalizar e Pagar"}
                   </button>
                 </div>
               </div>

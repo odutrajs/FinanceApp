@@ -152,9 +152,14 @@ export default function Page() {
 
               <button
                 type="submit"
-                className="w-full rounded-md bg-[#2F855A] px-4 py-2 text-white hover:bg-[#276749] transition"
+                disabled={isPending}
+                className={`w-full rounded-md px-4 py-2 text-white transition ${
+                  isPending
+                    ? "bg-[#A0AEC0] cursor-not-allowed"
+                    : "bg-[#2F855A] hover:bg-[#276749]"
+                }`}
               >
-                Entrar
+                {isPending ? "Entrando..." : "Entrar"}
               </button>
 
               <p className="text-center text-sm text-[#2D2D2D]/70">

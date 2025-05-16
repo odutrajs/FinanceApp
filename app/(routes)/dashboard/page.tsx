@@ -17,6 +17,7 @@ import { getTransactionCategoriesBalance } from "./services/getTransactionCatego
 import { CustomTooltip } from "./_components/CustomTooltip";
 import { deleteTransaction } from "./services/deleteTransaction";
 import { useToast } from "../../components/@/ui/use-toast";
+import { categoryColors } from "./data/categoryColors";
 
 export default function DashboardCards() {
   const [deleteId, setDeleteId] = useState<string | null>(null);
@@ -77,23 +78,6 @@ export default function DashboardCards() {
     0
   );
 
-  const categoryColors: Record<string, string> = {
-    Alimentação: "#2F855A",
-    "Cuidados pessoais": "#7F56D9",
-    Casa: "#F6AD55",
-    Doações: "#ED8936",
-    Educação: "#3182CE",
-    Impostos: "#E53E3E",
-    Lazer: "#D69E2E",
-    Mercado: "#38A169",
-    Pets: "#B7791F",
-    Saúde: "#805AD5",
-    Transporte: "#ECC94B",
-    Utilidades: "#4A5568",
-    Outros: "#A0AEC0",
-    Viagem: "#2B6CB0",
-    Vestuário: "#D53F8C",
-  };
   const chartData = categoryBalances.map((cat) => ({
     name: cat.name,
     value: cat.amount,
