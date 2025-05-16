@@ -5,14 +5,13 @@ const HeroSection = () => {
   return (
     <section className="bg-[#FDF6EC] flex flex-col justify-center items-center px-4 pt-20 pb-16">
       <div className="mx-auto max-w-screen-xl px-4 lg:flex lg:h-screen lg:items-center">
-        <div className="mx-auto max-w-2xl text-center">
-          <h1 className="text-3xl sm:text-5xl font-extrabold text-[#2D2D2D] break-words text-balance">
-            A Maneira Mais Rápida de Organizar{" "}
-            <strong className="font-extrabold text-[#2F855A]">
+        <div className="mx-auto max-w-1xl text-center">
+          <h1 className="text-3xl font-extrabold sm:text-5xl text-[#2D2D2D]">
+            A Maneira Mais Rápida de Organizar
+            <strong className="font-extrabold text-[#2F855A] sm:block">
               Suas Finanças pelo WhatsApp
             </strong>
           </h1>
-
           <p className="mt-6 sm:text-xl text-[#2D2D2D]">
             <span className="text-3xl font-bold text-[#2F855A]">+19 mil</span>{" "}
             pessoas já confiam no{" "}
@@ -21,7 +20,7 @@ const HeroSection = () => {
           </p>
           <div className="mt-10 flex justify-center gap-6 flex-wrap">
             <IphoneMockup type="image" imageSrc="/printWhats.jpeg" />
-            <IphoneMockup videoSrc="/video12.mp4" />
+            <IphoneMockup videoSrc="/video123.mp4" />
             <IphoneMockup type="image" imageSrc="/printWhats.jpeg" />
           </div>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
