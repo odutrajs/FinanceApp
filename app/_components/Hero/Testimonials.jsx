@@ -25,10 +25,11 @@ const Testimonials = () => {
                 "Eu costumava esquecer de registrar meus gastos, mas com o Dona Grana, consigo adicionar tudo direto pelo WhatsApp!",
             },
             {
-              name: "Pedro Elpídio",
-              title: "Developer Sênior",
-              image: "/pedro.png",
-              comment: "Ótimo sistema, facilita muito no controle de gastos!",
+              name: "Taina Zalourensi",
+              title: "Data Analyst",
+              image: "/taina.png",
+              comment:
+                "Sempre tive dificuldade em manter o controle financeiro, mas o Dona Grana transformou isso. Tudo é feito de forma intuitiva e pelo WhatsApp, sem complicação",
             },
           ].map((user, i) => (
             <div

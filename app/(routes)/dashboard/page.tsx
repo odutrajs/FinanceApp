@@ -31,11 +31,16 @@ export default function DashboardCards() {
     queryFn: getBalanceUser,
   });
 
-  const { data: transactions = [], isPending: isTransactionsLoading } =
-    useQuery({
-      queryKey: ["transactions", page],
-      queryFn: () => getTransactions({ page, limit }),
-    });
+  const {
+    data: transactionsData = { transactions: [], hasNextPage: false },
+    isPending: isTransactionsLoading,
+  } = useQuery({
+    queryKey: ["transactions", page],
+    queryFn: () => getTransactions({ page, limit }),
+  });
+
+  const transactions = transactionsData.transactions;
+  const hasNextPage = transactionsData.hasNextPage;
 
   const { data: categoryBalances = [], isPending: isCategoriesLoading } =
     useQuery({
@@ -247,8 +252,9 @@ export default function DashboardCards() {
                 </button>
                 <span className="text-sm">Página {page}</span>
                 <button
-                  className="text-sm font-medium text-[#2F855A]"
+                  className="text-sm font-medium text-[#2F855A] disabled:opacity-40"
                   onClick={() => setPage((prev) => prev + 1)}
+                  disabled={!hasNextPage}
                 >
                   Próxima
                 </button>

@@ -15,7 +15,7 @@ import { SignUpPayload, SignUpResponse } from "../../services/create-user";
 type FormData = {
   name: string;
   email: string;
-  cellphone: string;
+  phone: string;
   password: string;
   confirmarSenha: string;
   paymentRecurrent: "MONTHLY" | "ANNUALLY";
@@ -38,7 +38,7 @@ const SignUpFlow = () => {
     defaultValues: {
       name: "",
       email: "",
-      cellphone: "",
+      phone: "",
       password: "",
       confirmarSenha: "",
       paymentRecurrent: "MONTHLY",
@@ -47,17 +47,17 @@ const SignUpFlow = () => {
 
   const { mutateAsync: createUserMutate } = useMutation<
     SignUpResponse,
-    AxiosError,
+    AxiosError<CreateUserMessageError>,
     SignUpPayload
   >({
     mutationFn: createUser,
-    onError(error) {
-      const errorMessage = error.response?.data as CreateUserMessageError;
+    onError: (error) => {
+      const errorMessage = error.response?.data?.error;
       toast({
         title: "❌ Erro ao criar usuário",
         description:
-          errorMessage?.message ||
-          "Ocorreu um erro inesperado. Tente novamente.",
+          errorMessage ||
+          "Email ou telefone já utilizados, volte uma etapa e mude os campos",
         variant: "destructive",
       });
     },
@@ -67,38 +67,27 @@ const SignUpFlow = () => {
   const emailRef = useRef<HTMLInputElement | null>(null);
 
   const onSubmit = async (data: FormData) => {
-    try {
-      const payload = {
-        ...data,
-        cellphone: formatCellphone(data.cellphone),
-      };
+    const payload = {
+      ...data,
+      phone: formatCellphone(data.phone),
+    };
 
-      const user = await createUserMutate(payload);
-      console.log(user);
+    const user = await createUserMutate(payload);
+    console.log(user);
 
-      const { sessionUrl } = await startCheckoutSession({
-        userId: user.userId,
-        paymentRecurrent: getValues("paymentRecurrent"),
-      });
+    const { sessionUrl } = await startCheckoutSession({
+      userId: user.userId,
+      paymentRecurrent: getValues("paymentRecurrent"),
+    });
 
-      window.location.href = sessionUrl;
-    } catch (error) {
-      toast({
-        title: "❌ Erro no processo",
-        description:
-          error instanceof Error
-            ? error.message
-            : "Erro inesperado ao criar sessão.",
-        variant: "destructive",
-      });
-    }
+    window.location.href = sessionUrl;
   };
 
   const nextStep = async () => {
     const stepFields: Record<number, (keyof FormData)[] | undefined> = {
       1: ["name"],
       2: ["email"],
-      3: ["cellphone"],
+      3: ["phone"],
       4: ["password", "confirmarSenha"],
     };
     const fieldsToValidate = stepFields[step];
@@ -236,9 +225,18 @@ const SignUpFlow = () => {
                   Telefone
                 </label>
                 <Controller
-                  name="cellphone"
+                  name="phone"
                   control={control}
-                  rules={{ required: "Telefone é obrigatório" }}
+                  rules={{
+                    required: "Telefone é obrigatório",
+                    validate: (value) => {
+                      const onlyNumbers = value.replace(/\D/g, "");
+                      if (!/^\d{10,11}$/.test(onlyNumbers)) {
+                        return "Telefone inválido. Insira um número com DDD.";
+                      }
+                      return true;
+                    },
+                  }}
                   render={({ field }) => (
                     <input
                       {...field}
@@ -250,7 +248,7 @@ const SignUpFlow = () => {
                       }}
                       value={field.value}
                       className={`w-full border rounded-xl px-3 h-11 mb-1 focus:outline-none focus:ring-2 ${
-                        errors.cellphone
+                        errors.phone
                           ? "border-red-500 focus:ring-red-500"
                           : "focus:ring-green-500"
                       }`}
@@ -258,9 +256,10 @@ const SignUpFlow = () => {
                     />
                   )}
                 />
-                {errors.cellphone && (
+
+                {errors.phone && (
                   <p className="text-red-600 text-sm mt-1">
-                    {errors.cellphone.message}
+                    {errors.phone.message}
                   </p>
                 )}
                 <div className="flex justify-between gap-4 mt-4">

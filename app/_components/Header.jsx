@@ -28,9 +28,9 @@ const Header = () => {
   return (
     <header
       style={{
-        backgroundColor: "#2F855A", // Verde Inteligente
-        borderBottom: "1px solid #276749", // tom mais escuro para contraste
-        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)", // sombra mais sutil e elegante
+        backgroundColor: "#2F855A",
+        borderBottom: "1px solid #276749",
+        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
       }}
       className="w-full"
     >

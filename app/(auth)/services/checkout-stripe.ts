@@ -5,7 +5,7 @@ export async function createStripeSession(
   paymentRecurrent: string
 ): Promise<{ sessionUrl: string }> {
   console.log(userId);
-  const response = await api.post("/payment/create-session", {
+  const response = await api.post("/api/v1/payment/create-session", {
     userId,
     paymentRecurrent,
   });

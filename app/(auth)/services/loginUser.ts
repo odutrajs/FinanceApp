@@ -6,11 +6,11 @@ export type LoginPayload = {
 };
 
 export type LoginResponse = {
-  accessToken: string;
+  token: string;
 };
 
 export async function loginUser(body: LoginPayload) {
-  return api.post<LoginResponse>("/auth/login", body).then(({ data }) => data);
+  return api.post<LoginResponse>("/user/login", body).then(({ data }) => data);
 }
 
 export type LoginValidationErrors = {
@@ -18,5 +18,5 @@ export type LoginValidationErrors = {
 };
 
 export type LoginMessageError = {
-  message: string;
+  error: string;
 };

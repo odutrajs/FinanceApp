@@ -35,11 +35,11 @@ export default function Page() {
         description: `Bem-vindo de volta`,
       });
 
-      localStorage.setItem("token", data.accessToken);
+      localStorage.setItem("token", data.token);
       router.push("/dashboard");
     },
     onError(error: AxiosError) {
-      const message = (error.response?.data as LoginMessageError)?.message;
+      const message = (error.response?.data as LoginMessageError)?.error;
       toast({
         title: "Erro ao fazer login",
         description: message || "Verifique seus dados e tente novamente.",

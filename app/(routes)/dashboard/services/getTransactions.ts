@@ -10,19 +10,24 @@ export type Transaction = {
   identifier: string;
 };
 
-type GetTransactionsParams = {
+export type GetTransactionsParams = {
   page: number;
   limit: number;
+};
+
+export type GetTransactionsResponse = {
+  transactions: Transaction[];
+  hasNextPage: boolean;
 };
 
 export async function getTransactions({
   page,
   limit,
-}: GetTransactionsParams): Promise<Transaction[]> {
+}: GetTransactionsParams): Promise<GetTransactionsResponse> {
   const token = localStorage.getItem("token");
 
-  const { data } = await api.get<{ transactions: Transaction[] }>(
-    `/transaction?page=${page}&limit=${limit}`,
+  const { data } = await api.get<GetTransactionsResponse>(
+    `/api/v1/transaction?page=${page}&limit=${limit}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -30,5 +35,5 @@ export async function getTransactions({
     }
   );
 
-  return data.transactions;
+  return data;
 }

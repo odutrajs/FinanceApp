@@ -16,7 +16,7 @@ export async function getTransactionCategoriesBalance(
   const token = localStorage.getItem("token");
 
   const { data } = await api.get<CategoryBalanceResponse>(
-    `/transaction/category/balance`,
+    `/api/v1/transaction/category/balance`,
     {
       headers: {
         Authorization: `Bearer ${token}`,

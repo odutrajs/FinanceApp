@@ -3,7 +3,7 @@ import { api } from "../../../configs/api";
 export type SignUpPayload = {
   name: string;
   email: string;
-  cellphone: string;
+  phone: string;
   password: string;
   confirmarSenha: string;
   paymentRecurrent: "MONTHLY" | "ANNUALLY";
@@ -14,7 +14,9 @@ export type SignUpResponse = {
 };
 
 export async function createUser(body: SignUpPayload) {
-  return api.post<SignUpResponse>(`/user`, body).then(({ data }) => data);
+  return api
+    .post<SignUpResponse>(`/user/register`, body)
+    .then(({ data }) => data);
 }
 
 export type CreateUserValidationErrors = {
@@ -22,5 +24,5 @@ export type CreateUserValidationErrors = {
 };
 
 export type CreateUserMessageError = {
-  message: string;
+  error: string;
 };
