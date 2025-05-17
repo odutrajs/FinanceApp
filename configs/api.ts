@@ -14,7 +14,7 @@ api.interceptors.response.use(
   async (error) => {
     const message = error?.response?.data?.error;
 
-    if (message === "Token inválido ou expirado.") {
+    if (message === "Token inválido ou ausente") {
       localStorage.removeItem("accessToken");
       window.location.href = "/sign-in";
       return;

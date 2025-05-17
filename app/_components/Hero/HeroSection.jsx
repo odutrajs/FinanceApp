@@ -21,7 +21,7 @@ const HeroSection = () => {
           <div className="mt-10 flex justify-center gap-6 flex-wrap">
             <IphoneMockup type="image" imageSrc="/printWhats.jpeg" />
             <IphoneMockup videoSrc="/video123.mp4" />
-            <IphoneMockup type="image" imageSrc="/printWhats.jpeg" />
+            <IphoneMockup type="image" imageSrc="/printDash.jpeg" />
           </div>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <a

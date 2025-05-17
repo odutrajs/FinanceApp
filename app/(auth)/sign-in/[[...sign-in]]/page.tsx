@@ -30,11 +30,6 @@ export default function Page() {
   const { mutate: loginMutate, isPending } = useMutation({
     mutationFn: loginUser,
     onSuccess(data) {
-      toast({
-        title: "Login realizado com sucesso",
-        description: `Bem-vindo de volta`,
-      });
-
       localStorage.setItem("token", data.token);
       router.push("/dashboard");
     },
