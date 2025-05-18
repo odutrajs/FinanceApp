@@ -10,19 +10,24 @@ type CategoryBalanceResponse = {
   categories: CategoryBalance[];
 };
 
-export async function getTransactionCategoriesBalance(
-  transactionType: "DEBIT" | "CREDIT"
-): Promise<CategoryBalance[]> {
+export type GetCategoryBalanceParams = {
+  transactionType: "DEBIT" | "CREDIT";
+  startDate: string;
+  endDate: string;
+};
+
+export async function getTransactionCategoriesBalance({
+  transactionType,
+  startDate,
+  endDate,
+}: GetCategoryBalanceParams): Promise<CategoryBalance[]> {
   const token = localStorage.getItem("token");
 
   const { data } = await api.get<CategoryBalanceResponse>(
-    `/api/v1/transaction/category/balance`,
+    `/api/v1/transaction/category/balance?transactionType=${transactionType}&startDate=${startDate}&endDate=${endDate}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
-      },
-      params: {
-        transactionType,
       },
     }
   );

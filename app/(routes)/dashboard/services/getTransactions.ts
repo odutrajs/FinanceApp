@@ -13,6 +13,8 @@ export type Transaction = {
 export type GetTransactionsParams = {
   page: number;
   limit: number;
+  startDate: string;
+  endDate: string;
 };
 
 export type GetTransactionsResponse = {
@@ -23,11 +25,13 @@ export type GetTransactionsResponse = {
 export async function getTransactions({
   page,
   limit,
+  startDate,
+  endDate,
 }: GetTransactionsParams): Promise<GetTransactionsResponse> {
   const token = localStorage.getItem("token");
 
   const { data } = await api.get<GetTransactionsResponse>(
-    `/api/v1/transaction?page=${page}&limit=${limit}`,
+    `/api/v1/transaction?page=${page}&limit=${limit}&startDate=${startDate}&endDate=${endDate}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,

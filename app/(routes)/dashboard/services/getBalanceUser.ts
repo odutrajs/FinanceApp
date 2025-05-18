@@ -6,13 +6,25 @@ export type UserResponse = {
   balance: number;
 };
 
-export async function getBalanceUser(): Promise<UserResponse> {
+export type GetBalanceUserParams = {
+  startDate: string;
+  endDate: string;
+};
+
+export async function getBalanceUser({
+  startDate,
+  endDate,
+}: GetBalanceUserParams): Promise<UserResponse> {
   const token = localStorage.getItem("token");
-  const { data } = await api.get<UserResponse>("/user/balance", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+
+  const { data } = await api.get<UserResponse>(
+    `/user/balance?startDate=${startDate}&endDate=${endDate}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
 
   return data;
 }

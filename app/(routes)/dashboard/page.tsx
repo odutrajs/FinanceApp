@@ -20,27 +20,67 @@ import { useToast } from "../../components/@/ui/use-toast";
 import { categoryColors } from "./data/categoryColors";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { toZonedTime } from "date-fns-tz";
+import { utcToZonedTime } from "date-fns-tz";
+
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "../../../@/components/ui/popover";
+import { Calendar } from "../../../@/components/ui/calendar";
+import { Button } from "../../../@/components/ui/button";
 
 export default function DashboardCards() {
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [page, setPage] = useState(1);
+  const [startDate, setStartDate] = useState<Date | undefined>();
+  const [endDate, setEndDate] = useState<Date | undefined>();
+  const [filters, setFilters] = useState<{ startDate?: Date; endDate?: Date }>(
+    {}
+  );
+
+  const formattedStartDate = startDate
+    ? format(startDate, "yyyy-MM-dd")
+    : undefined;
+  const formattedEndDate = endDate ? format(endDate, "yyyy-MM-dd") : undefined;
+
+  console.log(formattedStartDate);
+  console.log(formattedEndDate);
+
   const limit = 10;
   const queryClient = useQueryClient();
 
   const { toast } = useToast();
 
   const { data: balanceUser, isPending } = useQuery({
-    queryKey: ["user"],
-    queryFn: getBalanceUser,
+    queryKey: ["user", filters],
+    queryFn: () =>
+      getBalanceUser({
+        startDate: filters.startDate
+          ? format(filters.startDate, "yyyy-MM-dd")
+          : undefined,
+        endDate: filters.endDate
+          ? format(filters.endDate, "yyyy-MM-dd")
+          : undefined,
+      }),
   });
 
   const {
     data: transactionsData = { transactions: [], hasNextPage: false },
     isPending: isTransactionsLoading,
   } = useQuery({
-    queryKey: ["transactions", page],
-    queryFn: () => getTransactions({ page, limit }),
+    queryKey: ["transactions", page, filters],
+    queryFn: () =>
+      getTransactions({
+        page,
+        limit,
+        startDate: filters.startDate
+          ? format(filters.startDate, "yyyy-MM-dd")
+          : undefined,
+        endDate: filters.endDate
+          ? format(filters.endDate, "yyyy-MM-dd")
+          : undefined,
+      }),
   });
 
   const transactions = transactionsData.transactions;
@@ -48,8 +88,17 @@ export default function DashboardCards() {
 
   const { data: categoryBalances = [], isPending: isCategoriesLoading } =
     useQuery({
-      queryKey: ["transaction-categories", "DEBIT"],
-      queryFn: () => getTransactionCategoriesBalance("DEBIT"),
+      queryKey: ["transaction-categories", "DEBIT", filters],
+      queryFn: () =>
+        getTransactionCategoriesBalance({
+          transactionType: "DEBIT",
+          startDate: filters.startDate
+            ? format(filters.startDate, "yyyy-MM-dd")
+            : undefined,
+          endDate: filters.endDate
+            ? format(filters.endDate, "yyyy-MM-dd")
+            : undefined,
+        }),
     });
 
   const deleteMutation = useMutation({
@@ -147,6 +196,85 @@ export default function DashboardCards() {
           </Card>
         </div>
 
+        <div className="flex gap-4 flex-wrap mb-4">
+          <div className="flex gap-4 flex-wrap items-end mb-4">
+            <div>
+              <label className="text-sm font-medium block mb-1">De:</label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="w-[200px] justify-start text-left"
+                  >
+                    {startDate
+                      ? format(startDate, "dd/MM/yyyy")
+                      : "Selecione a data"}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent align="start" className="w-auto p-0">
+                  <Calendar
+                    mode="single"
+                    selected={startDate}
+                    onSelect={setStartDate}
+                    initialFocus
+                    className="rounded-md border bg-white shadow"
+                    classNames={{ day: "w-9 h-9 text-sm" }}
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+
+            <div>
+              <label className="text-sm font-medium block mb-1">Até:</label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="w-[200px] justify-start text-left"
+                  >
+                    {endDate
+                      ? format(endDate, "dd/MM/yyyy")
+                      : "Selecione a data"}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent align="start" className="w-auto p-0">
+                  <Calendar
+                    mode="single"
+                    selected={endDate}
+                    onSelect={setEndDate}
+                    initialFocus
+                    className="rounded-md border bg-white shadow"
+                    classNames={{ day: "w-9 h-9 text-sm" }}
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+
+            <Button
+              onClick={() => {
+                setPage(1);
+                setFilters({ startDate, endDate });
+              }}
+              disabled={!startDate || !endDate}
+              className="h-10 px-4"
+            >
+              Filtrar
+            </Button>
+            <Button
+              onClick={() => {
+                setStartDate(undefined);
+                setEndDate(undefined);
+                setFilters({});
+                setPage(1);
+              }}
+              variant="ghost"
+              className="h-10 px-4 text-red-500"
+              disabled={!filters.startDate && !filters.endDate}
+            >
+              Resetar Filtros
+            </Button>
+          </div>
+        </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <Card className="lg:col-span-2">
             <CardHeader>
@@ -211,7 +339,7 @@ export default function DashboardCards() {
 
                         <p className="text-xs text-muted-foreground whitespace-nowrap">
                           {format(
-                            toZonedTime(item.transactionAt, "UTC"),
+                            utcToZonedTime(item.transactionAt, "UTC"),
                             "dd/MM/yyyy",
                             { locale: ptBR }
                           )}
