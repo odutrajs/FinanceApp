@@ -18,6 +18,9 @@ import { CustomTooltip } from "./_components/CustomTooltip";
 import { deleteTransaction } from "./services/deleteTransaction";
 import { useToast } from "../../components/@/ui/use-toast";
 import { categoryColors } from "./data/categoryColors";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { toZonedTime } from "date-fns-tz";
 
 export default function DashboardCards() {
   const [deleteId, setDeleteId] = useState<string | null>(null);
@@ -104,9 +107,6 @@ export default function DashboardCards() {
                     {balanceUser?.profit.toFixed(2)}
                   </p>
                 )}
-                <p className="text-xs text-muted-foreground mt-1">
-                  1 De Maio - 31 De Maio
-                </p>
               </div>
             </CardContent>
           </Card>
@@ -208,9 +208,12 @@ export default function DashboardCards() {
                         >
                           R$ {item.amount.toFixed(2)}
                         </p>
+
                         <p className="text-xs text-muted-foreground whitespace-nowrap">
-                          {new Date(item.transactionAt).toLocaleDateString(
-                            "pt-BR"
+                          {format(
+                            toZonedTime(item.transactionAt, "UTC"),
+                            "dd/MM/yyyy",
+                            { locale: ptBR }
                           )}
                         </p>
                       </div>

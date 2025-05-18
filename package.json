@@ -22,6 +22,8 @@
     "axios": "^1.6.8",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
+    "date-fns-tz": "^3.2.0",
     "drizzle-orm": "^0.30.9",
     "emoji-picker-react": "^4.9.2",
     "lucide-react": "^0.372.0",
