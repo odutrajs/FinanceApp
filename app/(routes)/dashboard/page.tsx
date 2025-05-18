@@ -305,13 +305,13 @@ export default function DashboardCards() {
                 : transactions.map((item) => (
                     <div
                       key={item.id}
-                      className="flex justify-between items-center border rounded-lg px-4 py-3"
+                      className="border rounded-lg px-4 py-3 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3"
                     >
                       <div className="flex-1">
                         <p className="font-medium text-[#2D2D2D]">
                           {item.description}
                         </p>
-                        <div className="flex gap-2 mt-1 items-center">
+                        <div className="flex gap-2 mt-1 items-center flex-wrap">
                           <span className="text-xs text-muted-foreground font-mono">
                             {item.identifier}
                           </span>
@@ -326,9 +326,9 @@ export default function DashboardCards() {
                           </span>
                         </div>
                       </div>
-                      <div className="flex flex-col items-end min-w-[100px]">
+                      <div className="flex flex-col items-start sm:items-end min-w-[100px]">
                         <p
-                          className={`font-semibold text-sm whitespace-nowrap ${
+                          className={`font-semibold text-sm ${
                             item.type === "CREDIT"
                               ? "text-green-600"
                               : "text-red-600"
@@ -336,7 +336,6 @@ export default function DashboardCards() {
                         >
                           R$ {item.amount.toFixed(2)}
                         </p>
-
                         <p className="text-xs text-muted-foreground whitespace-nowrap">
                           {format(
                             utcToZonedTime(item.transactionAt, "UTC"),
@@ -348,12 +347,9 @@ export default function DashboardCards() {
                       <button
                         onClick={() => deleteMutation.mutate(item.id)}
                         title="Excluir transação"
-                        className="ml-4 p-2 rounded-full border border-transparent hover:border-red-200 hover:bg-red-50 transition-colors duration-200"
+                        className="self-end sm:self-auto ml-0 sm:ml-4 p-2 rounded-full border border-transparent hover:border-red-200 hover:bg-red-50 transition-colors duration-200"
                       >
-                        <Trash2
-                          className="w-4 h-4"
-                          style={{ color: "#71717a" }}
-                        />
+                        <Trash2 className="w-4 h-4 text-zinc-500" />
                       </button>
                     </div>
                   ))}

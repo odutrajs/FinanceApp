@@ -24,6 +24,13 @@ export default function SuccessPage() {
           Ir para o WhatsApp
         </Link>
 
+        <Link
+          href="/sign-in"
+          className="inline-block mt-4 px-6 py-3 rounded-full border border-green-700 text-green-700 hover:bg-green-50 font-semibold transition-colors"
+        >
+          Ir para o Dashboard
+        </Link>
+
         <p className="text-xs text-gray-400 mt-6">
           Em caso de dúvidas, entre em contato com o suporte Dona Grana.
         </p>
