@@ -17,7 +17,7 @@ export default function FailurePage() {
         </p>
 
         <Link
-          href="https://wa.me/5541997339967"
+          href="https://wa.me/5541998415276"
           target="_blank"
           className="inline-block mt-6 px-6 py-3 rounded-full bg-green-700 hover:bg-green-800 text-white font-semibold transition-colors"
         >
