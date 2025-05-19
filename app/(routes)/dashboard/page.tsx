@@ -7,7 +7,13 @@ import {
   CardHeader,
   CardTitle,
 } from "../../components/@/ui/card";
-import { ArrowDown, ArrowUp, Trash2 } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowUp,
+  Trash2,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import Header from "../../_components/Header";
 import { getBalanceUser } from "./services/getBalanceUser";
@@ -30,26 +36,54 @@ import {
 import { Calendar } from "../../../@/components/ui/calendar";
 import { Button } from "../../../@/components/ui/button";
 
+import { startOfMonth, endOfMonth, setMonth, setYear } from "date-fns";
+import { currentYear, monthLabels } from "./data/months";
+
 export default function DashboardCards() {
+  const hoje = new Date();
+  const mesAtual = hoje.getMonth();
+  const anoAtual = hoje.getFullYear();
+
+  const defaultStart = startOfMonth(
+    setMonth(setYear(new Date(), anoAtual), mesAtual)
+  );
+  const defaultEnd = endOfMonth(defaultStart);
+
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [page, setPage] = useState(1);
-  const [startDate, setStartDate] = useState<Date | undefined>();
-  const [endDate, setEndDate] = useState<Date | undefined>();
-  const [filters, setFilters] = useState<{ startDate?: Date; endDate?: Date }>(
-    {}
-  );
+  const [startDate, setStartDate] = useState<Date>(defaultStart);
+  const [endDate, setEndDate] = useState<Date>(defaultEnd);
+  const [currentMonthIndex, setCurrentMonthIndex] = useState(mesAtual);
+  const [filters, setFilters] = useState<{ startDate?: Date; endDate?: Date }>({
+    startDate: defaultStart,
+    endDate: defaultEnd,
+  });
+
+  const handleMonthChange = (direction: "prev" | "next") => {
+    let newIndex =
+      direction === "prev" ? currentMonthIndex - 1 : currentMonthIndex + 1;
+    if (newIndex < 0) newIndex = 11;
+    if (newIndex > 11) newIndex = 0;
+
+    const newStart = startOfMonth(
+      setMonth(setYear(new Date(), currentYear), newIndex)
+    );
+    const newEnd = endOfMonth(newStart);
+
+    setCurrentMonthIndex(newIndex);
+    setStartDate(newStart);
+    setEndDate(newEnd);
+    setFilters({ startDate: newStart, endDate: newEnd });
+    setPage(1);
+  };
 
   const formattedStartDate = startDate
     ? format(startDate, "yyyy-MM-dd")
     : undefined;
   const formattedEndDate = endDate ? format(endDate, "yyyy-MM-dd") : undefined;
 
-  console.log(formattedStartDate);
-  console.log(formattedEndDate);
-
   const limit = 10;
   const queryClient = useQueryClient();
-
   const { toast } = useToast();
 
   const { data: balanceUser, isPending } = useQuery({
@@ -218,7 +252,11 @@ export default function DashboardCards() {
                     onSelect={setStartDate}
                     initialFocus
                     className="rounded-md border bg-white shadow"
-                    classNames={{ day: "w-9 h-9 text-sm" }}
+                    classNames={{
+                      day: "w-9 h-9 text-sm",
+                      nav_button: "text-zinc-700 hover:bg-zinc-100 p-1 rounded",
+                      nav: "flex justify-between items-center px-2 py-2",
+                    }}
                   />
                 </PopoverContent>
               </Popover>
@@ -244,7 +282,11 @@ export default function DashboardCards() {
                     onSelect={setEndDate}
                     initialFocus
                     className="rounded-md border bg-white shadow"
-                    classNames={{ day: "w-9 h-9 text-sm" }}
+                    classNames={{
+                      day: "w-9 h-9 text-sm",
+                      nav_button: "text-zinc-700 hover:bg-zinc-100 p-1 rounded",
+                      nav: "flex justify-between items-center px-2 py-2",
+                    }}
                   />
                 </PopoverContent>
               </Popover>
@@ -271,10 +313,63 @@ export default function DashboardCards() {
               className="h-10 px-4 text-red-500"
               disabled={!filters.startDate && !filters.endDate}
             >
-              Resetar Filtros
+              Limpar Filtros
             </Button>
           </div>
         </div>
+
+        {/* ✅ Navegação por mês (mobile) */}
+        <div className="flex items-center justify-center gap-2 sm:hidden">
+          <button
+            onClick={() => handleMonthChange("prev")}
+            className="p-2 rounded-lg border border-gray-300 bg-white hover:bg-gray-100"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+          <span className="px-4 py-2 rounded-lg border text-sm font-medium bg-white text-[#2D2D2D]">
+            {monthLabels[currentMonthIndex]}
+          </span>
+          <button
+            onClick={() => handleMonthChange("next")}
+            className="p-2 rounded-lg border border-gray-300 bg-white hover:bg-gray-100"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
+
+        {/* ✅ Navegação por mês (desktop) */}
+        <div className="hidden sm:flex flex-wrap gap-2">
+          {monthLabels.map((monthName, index) => {
+            const monthStart = startOfMonth(
+              setMonth(setYear(new Date(), currentYear), index)
+            );
+            const monthEnd = endOfMonth(monthStart);
+
+            const isActive =
+              filters.startDate?.getMonth() === index &&
+              filters.endDate?.getMonth() === index;
+
+            return (
+              <button
+                key={index}
+                onClick={() => {
+                  setStartDate(monthStart);
+                  setEndDate(monthEnd);
+                  setFilters({ startDate: monthStart, endDate: monthEnd });
+                  setPage(1);
+                }}
+                className={`px-3 py-1 rounded-lg border text-sm transition ${
+                  isActive
+                    ? "bg-[#2F855A] text-white border-[#2F855A]"
+                    : "bg-white text-[#2D2D2D] hover:bg-gray-100 border-gray-300"
+                }`}
+              >
+                {monthName}
+              </button>
+            );
+          })}
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <Card className="lg:col-span-2">
             <CardHeader>
@@ -329,13 +424,14 @@ export default function DashboardCards() {
                       <div className="flex flex-col items-start sm:items-end min-w-[100px]">
                         <p
                           className={`font-semibold text-sm ${
-                            item.type === "CREDIT"
+                            item.type === "PROFIT"
                               ? "text-green-600"
                               : "text-red-600"
                           }`}
                         >
                           R$ {item.amount.toFixed(2)}
                         </p>
+
                         <p className="text-xs text-muted-foreground whitespace-nowrap">
                           {format(
                             utcToZonedTime(item.transactionAt, "UTC"),
