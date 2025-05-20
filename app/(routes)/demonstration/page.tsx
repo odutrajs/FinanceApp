@@ -358,6 +358,78 @@ Sempre responda neste formato, com quebras de linha visíveis:
               onClick={nextSection}
               className="bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 text-white px-10 py-4 rounded-full text-lg shadow-lg hover:scale-105 transition-all duration-300"
             >
+              🚀 Continuar
+            </Button>
+          </motion.div>
+        </section>
+      )}
+
+      {currentSection === 3 && (
+        <section className="bg-white py-24 px-6 text-center">
+          <div className="max-w-3xl mx-auto">
+            <img
+              src="/graph.png"
+              alt="Projeção financeira"
+              className="mx-auto mb-10 max-w-sm h-auto"
+            />
+
+            <p className="text-lg text-gray-800 mb-4 leading-relaxed">
+              Imagine você daqui a <strong>6 meses</strong> com
+              <span className="text-green-600 font-semibold">
+                {" "}
+                dinheiro sobrando
+              </span>
+              , podendo viajar, trocar de celular ou antecipar parcelas.
+            </p>
+
+            <p className="text-lg text-gray-800 font-semibold mb-6">
+              Tudo isso porque você{" "}
+              <u>decidiu organizar sua vida financeira hoje</u>.
+            </p>
+
+            <p className="text-base text-gray-700 mb-6">
+              O Dona Grana foi criado por programadores e analistas financeiros
+              com um único objetivo:
+            </p>
+
+            <p className="text-xl font-bold text-gray-900 mb-6">
+              Te dar o controle do seu dinheiro — direto pelo WhatsApp.
+            </p>
+
+            <div className="text-2xl mb-6 leading-snug">
+              🧠 E como toda inteligência...
+              <br />
+              <strong className="text-orange-600">tem um valor.</strong>
+            </div>
+
+            <p className="text-gray-700 mb-6 text-base">
+              Poderíamos cobrar R$ 400 por ano (e ainda seria barato, pela
+              economia que você vai ter).
+            </p>
+
+            <p className="text-xl font-bold text-gray-900 mb-4">
+              Mas não seria justo. Nosso objetivo é a sua{" "}
+              <span className="text-green-700">liberdade financeira</span>.
+            </p>
+
+            <p className="text-base text-gray-700">
+              Por isso, liberamos acesso com{" "}
+              <span className="font-bold text-green-600">3 dias grátis</span> e
+              um plano de{" "}
+              <span className="font-bold">menos de R$ 0,20 por dia</span>.
+            </p>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1 }}
+            className="mt-10"
+          >
+            <Button
+              onClick={nextSection}
+              className="bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 text-white px-10 py-4 rounded-full text-lg shadow-lg hover:scale-105 transition-all duration-300"
+            >
               🚀 Avançar para Oferta
             </Button>
           </motion.div>
@@ -365,7 +437,7 @@ Sempre responda neste formato, com quebras de linha visíveis:
       )}
 
       {/* 4 - OFERTA FINAL */}
-      {currentSection === 3 && (
+      {currentSection === 4 && (
         <section className="py-20 px-4 bg-gradient-to-b from-orange-50 to-orange-100 text-center">
           <div className="mb-6">
             <motion.div
