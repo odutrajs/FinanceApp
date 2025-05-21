@@ -424,7 +424,7 @@ export default function DashboardCards() {
                       <div className="flex flex-col items-start sm:items-end min-w-[100px]">
                         <p
                           className={`font-semibold text-sm ${
-                            item.type === "PROFIT"
+                            item.type === "CREDIT"
                               ? "text-green-600"
                               : "text-red-600"
                           }`}

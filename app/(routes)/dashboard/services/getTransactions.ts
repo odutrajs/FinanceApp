@@ -4,7 +4,7 @@ export type Transaction = {
   id: string;
   description: string;
   amount: number;
-  type: "DEBIT" | "PROFIT";
+  type: "DEBIT" | "CREDIT";
   categoryName: string;
   transactionAt: string;
   identifier: string;

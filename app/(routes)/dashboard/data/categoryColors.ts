@@ -14,4 +14,16 @@ export const categoryColors: Record<string, string> = {
   Outros: "#A0AEC0",
   Viagem: "#2B6CB0",
   Vestuário: "#D53F8C",
+
+  // Novas categorias
+  Tecnologia: "#0BC5EA",
+  Receita: "#38B2AC",
+  Investimentos: "#6B46C1",
+  Assinaturas: "#DD6B20",
+  Entretenimento: "#F56565",
+  "Serviços domésticos": "#A78BFA",
+  "Despesas bancárias": "#CBD5E0",
+  "Rendimentos extras": "#68D391",
+  Empréstimos: "#9F7AEA",
+  Seguro: "#E53E3E",
 };

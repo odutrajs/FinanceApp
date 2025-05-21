@@ -11,7 +11,7 @@ type CategoryBalanceResponse = {
 };
 
 export type GetCategoryBalanceParams = {
-  transactionType: "DEBIT" | "PROFIT";
+  transactionType: "DEBIT" | "CREDIT";
   startDate: string;
   endDate: string;
 };
