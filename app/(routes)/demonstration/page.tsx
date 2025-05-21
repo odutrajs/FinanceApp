@@ -3,86 +3,50 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "../../../@/components/ui/button";
 import { useRouter } from "next/navigation";
+import axios from "axios";
+import { useMutation } from "@tanstack/react-query";
+import { api } from "../../../configs/api";
 
 export default function LandingPage() {
   const [currentSection, setCurrentSection] = useState(0);
   const [inputText, setInputText] = useState("");
-  const [response, setResponse] = useState("");
-  const [loading, setLoading] = useState(false);
   const [sentMessage, setSentMessage] = useState("");
   const [testeRealizado, setTesteRealizado] = useState(false);
 
   const nextSection = () => setCurrentSection((prev) => prev + 1);
-  const gerarId = () => Math.random().toString(36).substr(2, 5).toUpperCase();
   const hoje = new Date().toLocaleDateString("pt-BR");
   const router = useRouter();
 
-  const handleSend = async () => {
-    if (testeRealizado) return;
+  const mutation = useMutation({
+    mutationFn: async (message: string) => {
+      const res = await api.post("/api/v1/demo", {
+        message,
+      });
+      return res.data.response;
+    },
+    onSuccess: (data) => {
+      setSentMessage(inputText);
+      setResponse(data);
+      setTesteRealizado(true);
+    },
+    onError: () => {
+      setResponse("Erro ao conectar com a IA.");
+    },
+    onSettled: () => {
+      setInputText("");
+    },
+  });
 
-    if (!inputText.trim()) {
+  const [response, setResponse] = useState("");
+  const [timeLeft, setTimeLeft] = useState(15 * 60);
+
+  const handleSend = () => {
+    if (testeRealizado || !inputText.trim()) {
       setResponse("Por favor, digite uma mensagem válida.");
       return;
     }
-
-    setLoading(true);
-    setResponse("");
-
-    try {
-      const res = await fetch("https://api.openai.com/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
-        },
-        body: JSON.stringify({
-          model: "gpt-4o",
-          messages: [
-            {
-              role: "system",
-              content: `Você é um assistente financeiro que ajuda os usuários a registrar gastos como 'uber 30' ou 'mercado 100'.
-Sempre responda neste formato, com quebras de linha visíveis:
-
-✅ *Transação Registrada!*
-
-🆔 ID: XXXXX
-🔖 Descrição: {descricao extraída do input}
-💸 Valor: R$ {valor}
-🔄 Tipo: {tipo} (ex: 🟥 Despesa ou 🟩 Receita)
-🔖 Categoria: {categoria}
-🗓️ Data: ${hoje}`,
-            },
-            {
-              role: "user",
-              content: inputText,
-            },
-          ],
-        }),
-      });
-
-      if (!res.ok) {
-        throw new Error(`Erro ${res.status}`);
-      }
-
-      const data = await res.json();
-      const mensagem = data?.choices?.[0]?.message?.content;
-
-      if (!mensagem) {
-        throw new Error("Resposta inválida da IA.");
-      }
-
-      setResponse(mensagem);
-      setSentMessage(inputText);
-      setTesteRealizado(true);
-    } catch (error) {
-      setResponse("Erro ao conectar com a IA.");
-    } finally {
-      setLoading(false);
-      setInputText("");
-    }
+    mutation.mutate(inputText);
   };
-
-  const [timeLeft, setTimeLeft] = useState(15 * 60); // 15 minutos em segundos
 
   useEffect(() => {
     if (currentSection === 3 && timeLeft > 0) {
@@ -203,7 +167,7 @@ Sempre responda neste formato, com quebras de linha visíveis:
                 </div>
               )}
 
-              {loading ? (
+              {mutation.isPending ? (
                 <motion.div
                   key="typing"
                   initial={{ opacity: 0, scale: 0.9 }}
@@ -276,12 +240,11 @@ Sempre responda neste formato, com quebras de linha visíveis:
                   disabled={testeRealizado}
                   className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-full text-sm font-medium"
                 >
-                  {loading ? "..." : "➤"}
+                  {mutation.isPending ? "..." : "➤"}
                 </Button>
               </div>
             )}
 
-            {/* Mensagem de confirmação após envio */}
             {testeRealizado && (
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
