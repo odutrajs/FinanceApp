@@ -67,25 +67,62 @@ const SignUpFlow = () => {
 
   const nomeRef = useRef<HTMLInputElement | null>(null);
   const emailRef = useRef<HTMLInputElement | null>(null);
-
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
 
-    try {
-      const payload = {
-        ...data,
-        phone: formatCellphone(data.phone),
-      };
+    const payload = {
+      ...data,
+      phone: formatCellphone(data.phone),
+    };
 
-      const user = await createUserMutate(payload);
+    let userId: string | null = null;
+
+    try {
+      // Tenta criar o usuário
+      const user = await createUser(payload);
+      userId = user.userId;
+    } catch (error) {
+      const axiosError = error as AxiosError<CreateUserMessageError>;
+      const errorMessage = axiosError.response?.data?.error;
+
+      // Se o erro for de e-mail já cadastrado, tenta continuar com o pagamento
+      if (errorMessage === "E-mail já cadastrado") {
+        try {
+          const existingUser = await createUser(payload);
+          userId = existingUser.userId;
+        } catch {
+          toast({
+            title: "❌ Erro",
+            description: "Não foi possível recuperar usuário existente.",
+            variant: "destructive",
+          });
+          setIsSubmitting(false);
+          return;
+        }
+      } else {
+        toast({
+          title: "❌ Erro ao criar usuário",
+          description: errorMessage || "Erro inesperado.",
+          variant: "destructive",
+        });
+        setIsSubmitting(false);
+        return;
+      }
+    }
+
+    try {
       const { sessionUrl } = await startCheckoutSession({
-        userId: user.userId,
+        userId,
         paymentRecurrent: getValues("paymentRecurrent"),
       });
 
       window.location.href = sessionUrl;
-    } catch (error) {
-      // O toast de erro já é tratado nas mutations
+    } catch (e) {
+      toast({
+        title: "❌ Erro ao iniciar pagamento",
+        description: "Tente novamente mais tarde.",
+        variant: "destructive",
+      });
     } finally {
       setIsSubmitting(false);
     }
