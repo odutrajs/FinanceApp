@@ -23,7 +23,6 @@ import { getTransactionCategoriesBalance } from "./services/getTransactionCatego
 import { CustomTooltip } from "./_components/CustomTooltip";
 import { deleteTransaction } from "./services/deleteTransaction";
 import { useToast } from "../../components/@/ui/use-toast";
-import { categoryColors } from "./data/categoryColors";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { utcToZonedTime } from "date-fns-tz";
@@ -168,7 +167,7 @@ export default function DashboardCards() {
     name: cat.name,
     value: cat.amount,
     percent: ((cat.amount / totalCategoryAmount) * 100).toFixed(2),
-    cor: categoryColors[cat.name] || "#999999",
+    cor: cat.color || "#999999",
   }));
 
   return (
@@ -413,8 +412,7 @@ export default function DashboardCards() {
                           <span
                             className="text-xs px-2 py-0.5 rounded-full text-white"
                             style={{
-                              backgroundColor:
-                                categoryColors[item.categoryName] || "#999999",
+                              backgroundColor: item.categoryColor || "#999999",
                             }}
                           >
                             {item.categoryName}

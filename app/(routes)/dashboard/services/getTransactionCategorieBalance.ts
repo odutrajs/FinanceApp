@@ -4,6 +4,7 @@ export type CategoryBalance = {
   id: string;
   name: string;
   amount: number;
+  color: string;
 };
 
 type CategoryBalanceResponse = {

@@ -12,6 +12,7 @@ export default function LandingPage() {
   const [inputText, setInputText] = useState("");
   const [sentMessage, setSentMessage] = useState("");
   const [testeRealizado, setTesteRealizado] = useState(false);
+  const [showReminder, setShowReminder] = useState(false);
 
   const nextSection = () => setCurrentSection((prev) => prev + 1);
   const hoje = new Date().toLocaleDateString("pt-BR");
@@ -49,14 +50,20 @@ export default function LandingPage() {
   };
 
   useEffect(() => {
-    if (currentSection === 3 && timeLeft > 0) {
-      const timer = setInterval(() => {
-        setTimeLeft((prev) => prev - 1);
-      }, 1000);
+    if (currentSection !== 5) return;
 
-      return () => clearInterval(timer);
-    }
-  }, [currentSection, timeLeft]);
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [currentSection]);
 
   const formatTime = (seconds: number) => {
     const m = Math.floor(seconds / 60)
@@ -277,8 +284,82 @@ export default function LandingPage() {
         </section>
       )}
 
-      {/* 3 - BENEFÍCIOS */}
       {currentSection === 2 && (
+        <section className="min-h-screen py-20 px-4 bg-white text-center flex flex-col items-center">
+          <span className="text-xs uppercase tracking-wide bg-orange-100 text-orange-800 px-3 py-1 rounded-full font-semibold mb-3">
+            Demonstração
+          </span>
+          <span className="text-xs uppercase tracking-wide bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-semibold mb-4">
+            Lembrete Automático
+          </span>
+
+          <h2 className="text-4xl font-extrabold tracking-tight text-gray-900">
+            Registre lembretes importantes
+          </h2>
+          <p className="text-lg max-w-xl text-gray-700 mt-4">
+            Com apenas um clique, você pode registrar lembretes como beber água,
+            tomar remédios ou pagar boletos.
+          </p>
+
+          <div className="mt-12 w-full max-w-xl mx-auto bg-[#ece5dd] p-6 rounded-2xl shadow-xl border border-[#d1ccc0] relative">
+            <div className="text-xs text-gray-500 mb-2 text-left">Hoje</div>
+
+            <div className="flex flex-col space-y-3">
+              <div className="self-start bg-white px-4 py-2 rounded-lg text-sm shadow max-w-[75%]">
+                Preciso te lembrar de alguma coisa?
+              </div>
+
+              {!showReminder ? (
+                <motion.button
+                  whileTap={{ scale: 0.95 }}
+                  whileHover={{ scale: 1.05 }}
+                  onClick={() => setShowReminder(true)}
+                  className="self-end bg-green-600 text-white px-4 py-2 rounded-full text-sm font-medium shadow hover:bg-green-700 transition"
+                >
+                  Criar lembrete
+                </motion.button>
+              ) : (
+                <motion.div
+                  key="lembrete-registrado"
+                  initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="self-start bg-white px-4 py-2 rounded-lg text-sm shadow max-w-[75%] text-left text-gray-900 whitespace-pre-line"
+                >
+                  📌 <strong>Lembrete registrado!</strong>
+                  <br />
+                  <br />
+                  Não se esqueça de tomar água 💧
+                  <br />⏰ {hoje}, 19:00
+                </motion.div>
+              )}
+            </div>
+
+            {showReminder && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1, duration: 0.5 }}
+                className="text-xs text-right text-gray-500 mt-2"
+              >
+                18:33
+              </motion.div>
+            )}
+          </div>
+
+          <div className="text-center mt-10">
+            <Button
+              onClick={nextSection}
+              className="bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 text-white px-10 py-4 rounded-full text-lg shadow-lg hover:scale-105 transition-all duration-300"
+            >
+              🚀 Continuar
+            </Button>
+          </div>
+        </section>
+      )}
+
+      {/* 3 - BENEFÍCIOS */}
+      {currentSection === 3 && (
         <section className="min-h-screen py-20 px-4 bg-white text-center flex flex-col items-center">
           <span className="text-xs uppercase tracking-wide bg-green-100 text-green-800 px-3 py-1 rounded-full font-semibold mb-4">
             Visão Geral
@@ -327,7 +408,7 @@ export default function LandingPage() {
         </section>
       )}
 
-      {currentSection === 3 && (
+      {currentSection === 4 && (
         <section className="bg-white py-24 px-6 text-center">
           <div className="max-w-3xl mx-auto">
             <img
@@ -400,7 +481,7 @@ export default function LandingPage() {
       )}
 
       {/* 4 - OFERTA FINAL */}
-      {currentSection === 4 && (
+      {currentSection === 5 && (
         <section className="py-20 px-4 bg-gradient-to-b from-orange-50 to-orange-100 text-center">
           <div className="mb-6">
             <motion.div

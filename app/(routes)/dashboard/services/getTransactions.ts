@@ -8,6 +8,7 @@ export type Transaction = {
   categoryName: string;
   transactionAt: string;
   identifier: string;
+  categoryColor: string;
 };
 
 export type GetTransactionsParams = {
