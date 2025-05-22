@@ -13,6 +13,7 @@ import {
   Trash2,
   ChevronLeft,
   ChevronRight,
+  Pencil,
 } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import Header from "../../_components/Header";
@@ -26,6 +27,7 @@ import { useToast } from "../../components/@/ui/use-toast";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { utcToZonedTime } from "date-fns-tz";
+import { useRouter } from "next/navigation";
 
 import {
   Popover,
@@ -42,6 +44,7 @@ export default function DashboardCards() {
   const hoje = new Date();
   const mesAtual = hoje.getMonth();
   const anoAtual = hoje.getFullYear();
+  const router = useRouter();
 
   const defaultStart = startOfMonth(
     setMonth(setYear(new Date(), anoAtual), mesAtual)
@@ -444,6 +447,13 @@ export default function DashboardCards() {
                         className="self-end sm:self-auto ml-0 sm:ml-4 p-2 rounded-full border border-transparent hover:border-red-200 hover:bg-red-50 transition-colors duration-200"
                       >
                         <Trash2 className="w-4 h-4 text-zinc-500" />
+                      </button>
+                      <button
+                        onClick={() => router.push(`/transaction/${item.id}`)}
+                        title="Editar transação"
+                        className="self-end sm:self-auto ml-2 p-2 rounded-full border border-transparent hover:border-blue-200 hover:bg-blue-50 transition-colors duration-200"
+                      >
+                        <Pencil className="w-4 h-4 text-zinc-500" />
                       </button>
                     </div>
                   ))}

@@ -57,12 +57,19 @@ const Header = () => {
                 </Button>
               </Link>
             ) : (
-              <Button
-                className="bg-[#2D2D2D] text-white hover:bg-[#1F1F1F] transition"
-                onClick={handleLogout}
-              >
-                Sair
-              </Button>
+              <>
+                <Link href="/categories">
+                  <Button className="bg-[#3182CE] text-white hover:bg-[#2B6CB0] transition m-2">
+                    Nova Categoria
+                  </Button>
+                </Link>
+                <Button
+                  className="bg-[#2D2D2D] text-white hover:bg-[#1F1F1F] transition"
+                  onClick={handleLogout}
+                >
+                  Sair
+                </Button>
+              </>
             )
           ) : (
             <div className="flex items-center gap-3">
