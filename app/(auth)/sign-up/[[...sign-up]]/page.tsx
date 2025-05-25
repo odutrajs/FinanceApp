@@ -180,10 +180,10 @@ const SignUpFlow = () => {
                         field.ref(el);
                         nomeRef.current = el;
                       }}
-                      className={`w-full border rounded-xl px-3 h-11 mb-1 focus:outline-none focus:ring-2 ${
+                      className={`w-full rounded-2xl px-4 py-3 text-base border shadow-sm focus:outline-none focus:ring-2 ${
                         errors.name
                           ? "border-red-500 focus:ring-red-500"
-                          : "focus:ring-green-500"
+                          : "border-gray-300 focus:ring-[#2F855A]"
                       }`}
                       placeholder="Digite seu nome ou apelido"
                     />
@@ -197,7 +197,11 @@ const SignUpFlow = () => {
                 <button
                   type="button"
                   onClick={nextStep}
-                  className="w-full mt-2 bg-green-600 text-white h-11 rounded-xl hover:bg-green-700 transition"
+                  className={`w-full rounded-2xl mt-2 px-4 py-3 text-white font-semibold shadow transition-all duration-200 ${
+                    isSubmitting
+                      ? "bg-gray-400 cursor-not-allowed"
+                      : "bg-[#2F855A] hover:bg-[#276749] active:scale-95"
+                  }`}
                 >
                   Continuar
                 </button>
@@ -231,10 +235,10 @@ const SignUpFlow = () => {
                         field.ref(el);
                         emailRef.current = el;
                       }}
-                      className={`w-full border rounded-xl px-3 h-11 mb-1 focus:outline-none focus:ring-2 ${
+                      className={`w-full rounded-2xl px-4 py-3 text-base border shadow-sm focus:outline-none focus:ring-2 ${
                         errors.email
                           ? "border-red-500 focus:ring-red-500"
-                          : "focus:ring-green-500"
+                          : "border-gray-300 focus:ring-[#2F855A]"
                       }`}
                       placeholder="Digite seu e-mail"
                     />
@@ -256,7 +260,11 @@ const SignUpFlow = () => {
                   <button
                     type="button"
                     onClick={nextStep}
-                    className="w-full mt-2 bg-green-600 text-white h-11 rounded-xl hover:bg-green-700 transition"
+                    className={`w-full rounded-2xl px-4 py-3 text-white font-semibold shadow transition-all duration-200 ${
+                      isSubmitting
+                        ? "bg-gray-400 cursor-not-allowed"
+                        : "bg-[#2F855A] hover:bg-[#276749] active:scale-95"
+                    }`}
                   >
                     Continuar
                   </button>
@@ -292,10 +300,10 @@ const SignUpFlow = () => {
                         field.onChange(masked);
                       }}
                       value={field.value}
-                      className={`w-full border rounded-xl px-3 h-11 mb-1 focus:outline-none focus:ring-2 ${
+                      className={`w-full rounded-2xl px-4 py-3 text-base border shadow-sm focus:outline-none focus:ring-2 ${
                         errors.phone
                           ? "border-red-500 focus:ring-red-500"
-                          : "focus:ring-green-500"
+                          : "border-gray-300 focus:ring-[#2F855A]"
                       }`}
                       placeholder="Digite seu telefone"
                     />
@@ -318,7 +326,11 @@ const SignUpFlow = () => {
                   <button
                     type="button"
                     onClick={nextStep}
-                    className="w-full mt-2 bg-green-600 text-white h-11 rounded-xl hover:bg-green-700 transition"
+                    className={`w-full rounded-2xl px-4 py-3 text-white font-semibold shadow transition-all duration-200 ${
+                      isSubmitting
+                        ? "bg-gray-400 cursor-not-allowed"
+                        : "bg-[#2F855A] hover:bg-[#276749] active:scale-95"
+                    }`}
                   >
                     Continuar
                   </button>
@@ -340,10 +352,10 @@ const SignUpFlow = () => {
                       {...field}
                       id="senha"
                       type="password"
-                      className={`w-full border rounded-xl px-3 h-11 mb-1 focus:outline-none focus:ring-2 ${
+                      className={`w-full rounded-2xl px-4 py-3 text-base border shadow-sm focus:outline-none focus:ring-2 ${
                         errors.password
                           ? "border-red-500 focus:ring-red-500"
-                          : "focus:ring-green-500"
+                          : "border-gray-300 focus:ring-[#2F855A]"
                       }`}
                       placeholder="Digite sua senha"
                     />
@@ -374,10 +386,10 @@ const SignUpFlow = () => {
                       {...field}
                       id="confirmarSenha"
                       type="password"
-                      className={`w-full border rounded-xl px-3 h-11 mb-1 focus:outline-none focus:ring-2 ${
+                      className={`w-full rounded-2xl px-4 py-3 text-base border shadow-sm focus:outline-none focus:ring-2 ${
                         errors.confirmarSenha
                           ? "border-red-500 focus:ring-red-500"
-                          : "focus:ring-green-500"
+                          : "border-gray-300 focus:ring-[#2F855A]"
                       }`}
                       placeholder="Confirme sua senha"
                     />
@@ -400,7 +412,11 @@ const SignUpFlow = () => {
                   <button
                     type="button"
                     onClick={nextStep}
-                    className="w-full mt-2 bg-green-600 text-white h-11 rounded-xl hover:bg-green-700 transition"
+                    className={`w-full rounded-2xl px-4 py-3 text-white font-semibold shadow transition-all duration-200 ${
+                      isSubmitting
+                        ? "bg-gray-400 cursor-not-allowed"
+                        : "bg-[#2F855A] hover:bg-[#276749] active:scale-95"
+                    }`}
                   >
                     Continuar
                   </button>

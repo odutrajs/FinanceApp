@@ -48,29 +48,37 @@ export default function Page() {
   };
 
   return (
-    <section className="min-h-screen bg-[#FDF6EC] flex flex-col">
+    <section className="min-h-screen bg-gradient-to-br from-[#FDF6EC] to-[#FFF8F0] flex flex-col">
       <div className="flex-grow lg:grid lg:grid-cols-12">
-        <section className="relative flex h-32 items-end bg-[#2F855A] lg:col-span-5 lg:h-full xl:col-span-6">
-          <div className="absolute inset-0 bg-[#2F855A]" />
-          <div className="hidden lg:relative lg:block lg:p-12 z-10">
-            <h2 className="mt-6 text-2xl font-bold text-white sm:text-3xl md:text-4xl">
+        {/* Lateral Verde com Imagem */}
+        <section className="relative flex h-32 items-end lg:col-span-5 lg:h-full xl:col-span-6 overflow-hidden">
+          <div className="absolute inset-0 bg-[#2F855A]">
+            <img
+              src="/logoDonaGranna.png"
+              alt="Finanças"
+              className="w-full h-full object-cover opacity-30"
+            />
+          </div>
+          <div className="hidden lg:relative lg:block lg:p-12 z-10 text-white">
+            <h2 className="mt-6 text-3xl font-bold sm:text-4xl">
               Bem-vindo de volta
             </h2>
-            <p className="mt-4 leading-relaxed text-white/90">
+            <p className="mt-4 text-lg leading-relaxed text-white/90">
               Acesse sua conta para continuar organizando suas finanças com o
               Dona Grana.
             </p>
           </div>
         </section>
 
-        <main className="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6">
-          <div className="max-w-xl lg:max-w-lg w-full">
+        {/* Formulário */}
+        <main className="flex items-center justify-center px-6 py-10 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6 bg-white">
+          <div className="max-w-xl lg:max-w-md w-full">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               <div className="text-center mb-6">
-                <h1 className="text-3xl font-bold text-[#2D2D2D]">
+                <h1 className="text-4xl font-bold text-[#2D2D2D]">
                   Dona Grana
                 </h1>
-                <p className="text-sm text-[#2D2D2D]/70">
+                <p className="text-sm text-[#2D2D2D]/70 mt-1">
                   Digite seus dados para entrar
                 </p>
               </div>
@@ -97,7 +105,8 @@ export default function Page() {
                       {...field}
                       id="email"
                       type="email"
-                      className={`mt-1 w-full rounded-md border px-4 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 ${
+                      inputMode="email"
+                      className={`mt-1 w-full rounded-2xl border px-4 py-3 text-base shadow-sm focus:outline-none focus:ring-2 ${
                         errors.email
                           ? "border-red-500 focus:ring-red-500"
                           : "border-gray-300 focus:ring-[#2F855A]"
@@ -129,7 +138,7 @@ export default function Page() {
                       {...field}
                       id="password"
                       type="password"
-                      className={`mt-1 w-full rounded-md border px-4 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 ${
+                      className={`mt-1 w-full rounded-2xl border px-4 py-3 text-base shadow-sm focus:outline-none focus:ring-2 ${
                         errors.password
                           ? "border-red-500 focus:ring-red-500"
                           : "border-gray-300 focus:ring-[#2F855A]"
@@ -148,10 +157,10 @@ export default function Page() {
               <button
                 type="submit"
                 disabled={isPending}
-                className={`w-full rounded-md px-4 py-2 text-white transition ${
+                className={`w-full rounded-2xl px-4 py-3 text-white font-semibold shadow transition-all duration-200 ${
                   isPending
-                    ? "bg-[#A0AEC0] cursor-not-allowed"
-                    : "bg-[#2F855A] hover:bg-[#276749]"
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-[#2F855A] hover:bg-[#276749] active:scale-95"
                 }`}
               >
                 {isPending ? "Entrando..." : "Entrar"}
