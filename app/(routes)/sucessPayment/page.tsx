@@ -21,7 +21,7 @@ export default function SuccessPage() {
           target="_blank"
           className="inline-block mt-6 px-6 py-3 rounded-full bg-green-700 hover:bg-green-800 text-white font-semibold transition-colors"
         >
-          Ir para o WhatsApp
+          Começar a registrar meus gastos
         </Link>
 
         <Link
