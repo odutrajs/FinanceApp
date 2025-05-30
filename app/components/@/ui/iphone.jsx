@@ -17,9 +17,7 @@ const IphoneMockup = ({
         {type === "video" ? (
           <video
             src={videoSrc}
-            width={272}
-            height={572}
-            className="object-cover"
+            className="w-full h-full object-cover"
             autoPlay
             muted
             loop
