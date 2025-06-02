@@ -39,6 +39,8 @@ import { Button } from "../../../@/components/ui/button";
 
 import { startOfMonth, endOfMonth, setMonth, setYear } from "date-fns";
 import { currentYear, monthLabels } from "./data/months";
+import { formatPhoneNumber } from "react-phone-number-input";
+import { useUser } from "../../contexts/UserContext";
 
 export default function DashboardCards() {
   const hoje = new Date();
@@ -60,6 +62,10 @@ export default function DashboardCards() {
     startDate: defaultStart,
     endDate: defaultEnd,
   });
+  const { user: me } = useUser();
+  const [registeredByFilter, setRegisteredByFilter] = useState<
+    "all" | "me" | "family"
+  >("all");
 
   const handleMonthChange = (direction: "prev" | "next") => {
     let newIndex =
@@ -105,7 +111,7 @@ export default function DashboardCards() {
     data: transactionsData = { transactions: [], hasNextPage: false },
     isPending: isTransactionsLoading,
   } = useQuery({
-    queryKey: ["transactions", page, filters],
+    queryKey: ["transactions", page, filters, registeredByFilter],
     queryFn: () =>
       getTransactions({
         page,
@@ -116,6 +122,12 @@ export default function DashboardCards() {
         endDate: filters.endDate
           ? format(filters.endDate, "yyyy-MM-dd")
           : undefined,
+        registeredBy:
+          registeredByFilter === "all"
+            ? undefined
+            : registeredByFilter === "me"
+            ? me?.phone
+            : "family",
       }),
   });
 
@@ -233,7 +245,29 @@ export default function DashboardCards() {
         </div>
 
         <div className="flex gap-4 flex-wrap mb-4">
-          <div className="flex gap-4 flex-wrap items-end mb-4">
+          <div className="flex flex-col sm:flex-row sm:items-end sm:flex-wrap gap-4 mb-6">
+            {me?.sharedWithPhones && (
+              <div className="flex-1 sm:flex-none">
+                <label className="text-sm font-medium block mb-1">
+                  Cadastrado por:
+                </label>
+                <select
+                  value={registeredByFilter}
+                  onChange={(e) => {
+                    setRegisteredByFilter(
+                      e.target.value as "all" | "me" | "family"
+                    );
+                    setPage(1);
+                  }}
+                  className="w-full border rounded px-3 py-2 text-sm"
+                >
+                  <option value="all">Todos</option>
+                  <option value="me">Você</option>
+                  <option value="family">Familiar</option>
+                </select>
+              </div>
+            )}
+
             <div>
               <label className="text-sm font-medium block mb-1">De:</label>
               <Popover>
@@ -293,30 +327,31 @@ export default function DashboardCards() {
                 </PopoverContent>
               </Popover>
             </div>
-
-            <Button
-              onClick={() => {
-                setPage(1);
-                setFilters({ startDate, endDate });
-              }}
-              disabled={!startDate || !endDate}
-              className="h-10 px-4"
-            >
-              Filtrar
-            </Button>
-            <Button
-              onClick={() => {
-                setStartDate(undefined);
-                setEndDate(undefined);
-                setFilters({});
-                setPage(1);
-              }}
-              variant="ghost"
-              className="h-10 px-4 text-red-500"
-              disabled={!filters.startDate && !filters.endDate}
-            >
-              Limpar Filtros
-            </Button>
+            <div className="flex gap-2 sm:items-end">
+              <Button
+                onClick={() => {
+                  setPage(1);
+                  setFilters({ startDate, endDate });
+                }}
+                disabled={!startDate || !endDate}
+                className="h-10 px-4"
+              >
+                Filtrar
+              </Button>
+              <Button
+                onClick={() => {
+                  setStartDate(undefined);
+                  setEndDate(undefined);
+                  setFilters({});
+                  setPage(1);
+                }}
+                variant="ghost"
+                className="h-10 px-4 text-red-500"
+                disabled={!filters.startDate && !filters.endDate}
+              >
+                Limpar Filtros
+              </Button>
+            </div>
           </div>
         </div>
 
@@ -379,6 +414,7 @@ export default function DashboardCards() {
                 Transações
               </CardTitle>
             </CardHeader>
+
             <CardContent className="space-y-4">
               {isTransactionsLoading
                 ? Array.from({ length: 6 }).map((_, idx) => (
@@ -405,6 +441,30 @@ export default function DashboardCards() {
                       className="border rounded-lg px-4 py-3 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3"
                     >
                       <div className="flex-1">
+                        {item.registeredBy && (
+                          <span
+                            className={`text-[10px] inline-flex items-center gap-1 px-2 py-0.5 rounded-full font-medium
+                              ${
+                                item.registeredBy === me?.phone
+                                  ? "bg-green-100 text-green-700"
+                                  : "bg-yellow-100 text-yellow-700"
+                              }
+                            `}
+                          >
+                            {item.registeredBy === me?.phone ? (
+                              <>
+                                <span className="w-1.5 h-1.5 bg-green-600 rounded-full" />
+                                Cadastrado por você
+                              </>
+                            ) : (
+                              <>
+                                <span className="w-1.5 h-1.5 bg-yellow-500 rounded-full" />
+                                Cadastrado por familiar
+                              </>
+                            )}
+                          </span>
+                        )}
+
                         <p className="font-medium text-[#2D2D2D]">
                           {item.description}
                         </p>
@@ -412,6 +472,7 @@ export default function DashboardCards() {
                           <span className="text-xs text-muted-foreground font-mono">
                             {item.identifier}
                           </span>
+
                           <span
                             className="text-xs px-2 py-0.5 rounded-full text-white"
                             style={{

@@ -37,6 +37,7 @@
     "react-dom": "^18",
     "react-hook-form": "^7.56.1",
     "react-input-mask": "^2.0.4",
+    "react-phone-number-input": "^3.4.12",
     "recharts": "^2.12.6",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7"

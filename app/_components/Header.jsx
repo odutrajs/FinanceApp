@@ -8,17 +8,14 @@ import { Button } from "../components/@/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { getMe } from "../(auth)/services/get-me";
 import { Menu, X } from "lucide-react";
+import { useUser } from "../contexts/UserContext";
 
 const Header = () => {
   const pathname = usePathname();
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const { data: me, isPending } = useQuery({
-    queryKey: ["userMe"],
-    queryFn: getMe,
-    retry: false,
-  });
+  const { user: me, isLoading: isPending } = useUser();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -79,7 +76,7 @@ const Header = () => {
                       Nova Categoria
                     </Button>
                   </Link>
-                  <Link href="/compartilhar-conta">
+                  <Link href="/shared-account">
                     <Button className="bg-yellow-500 hover:bg-yellow-400 text-white transition font-medium">
                       Compartilhar Conta
                     </Button>

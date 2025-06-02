@@ -4,7 +4,8 @@ export type UserMeResponse = {
   id: string;
   name: string;
   email: string;
-  sharedWithPhones?: [];
+  phone: string;
+  sharedWithPhones: string[];
 };
 
 export async function getMe(): Promise<UserMeResponse> {

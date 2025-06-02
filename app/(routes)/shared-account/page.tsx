@@ -11,6 +11,8 @@ import { deleteSharedPhone } from "./services/deleteSharedPhones";
 import { Button } from "../../../@/components/ui/button";
 import { maskCellphone } from "../../../utils/maskCellphone";
 import { queryClient } from "../../../configs/query";
+import "react-phone-number-input/style.css";
+import PhoneInput from "react-phone-number-input";
 
 type SharedForm = {
   phone: string;
@@ -74,8 +76,29 @@ export default function SharedAccountPage() {
   }, [user, reset]);
 
   const onSubmit = (data: SharedForm) => {
-    mutate(data);
+    const digitsOnly = data.phone.replace(/\D/g, "");
+    mutate({ phone: digitsOnly });
   };
+
+  function formatE164ToDisplay(phone: string) {
+    if (!phone.startsWith("55") || phone.length !== 13) return phone;
+
+    const ddd = phone.slice(2, 4);
+    const firstPart = phone.slice(4, 9);
+    const secondPart = phone.slice(9);
+
+    return `(55) ${ddd}${firstPart}-${secondPart}`;
+  }
+
+  function formatPhoneInternational(e164: string) {
+    if (!e164.startsWith("55") || e164.length !== 13) return e164;
+
+    const ddd = e164.slice(2, 4);
+    const first = e164.slice(4, 9);
+    const last = e164.slice(9);
+
+    return `+55 (${ddd}) ${first}-${last}`;
+  }
 
   return (
     <>
@@ -105,7 +128,7 @@ export default function SharedAccountPage() {
                           📞
                         </div>
                         <span className="text-sm text-gray-800 font-medium">
-                          {maskCellphone(phone)}
+                          {formatE164ToDisplay(phone)}
                         </span>
                       </div>
                       <button
@@ -135,17 +158,15 @@ export default function SharedAccountPage() {
                   name="phone"
                   control={control}
                   render={({ field }) => (
-                    <input
-                      {...field}
-                      type="text"
-                      inputMode="tel"
-                      placeholder="(00) 00000-0000"
-                      value={field.value}
-                      onChange={(e) =>
-                        field.onChange(maskCellphone(e.target.value))
-                      }
-                      className="w-full border px-4 h-11 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500"
-                    />
+                    <div className="w-full">
+                      <PhoneInput
+                        {...field}
+                        defaultCountry="BR"
+                        international
+                        countryCallingCodeEditable={false}
+                        className="w-full px-4 py-2 h-12 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 bg-white text-sm"
+                      />
+                    </div>
                   )}
                 />
 

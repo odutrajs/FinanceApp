@@ -3,6 +3,7 @@ import "./globals.css";
 import { QueryProvider } from "../configs/QueryProvider";
 import { Toaster } from "./components/@/ui/toaster";
 import Script from "next/script";
+import { UserProvider } from "./contexts/UserContext";
 
 const outfit = Outfit({ subsets: ["latin"] });
 
@@ -56,8 +57,10 @@ export default function RootLayout({
       `}
         </Script>
         <QueryProvider>
-          {children}
-          <Toaster />
+          <UserProvider>
+            {children}
+            <Toaster />
+          </UserProvider>
         </QueryProvider>
       </body>
     </html>
