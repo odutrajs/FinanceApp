@@ -9,10 +9,10 @@ import { getMe } from "../../(auth)/services/get-me";
 import { updateSharedPhones } from "./services/updateSharedPhones";
 import { deleteSharedPhone } from "./services/deleteSharedPhones";
 import { Button } from "../../../@/components/ui/button";
-import { maskCellphone } from "../../../utils/maskCellphone";
 import { queryClient } from "../../../configs/query";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
+import { useRouter } from "next/navigation";
 
 type SharedForm = {
   phone: string;
@@ -20,6 +20,7 @@ type SharedForm = {
 
 export default function SharedAccountPage() {
   const { toast } = useToast();
+  const router = useRouter();
 
   const { data: user, isLoading } = useQuery({
     queryKey: ["userMe"],
@@ -90,20 +91,17 @@ export default function SharedAccountPage() {
     return `(55) ${ddd}${firstPart}-${secondPart}`;
   }
 
-  function formatPhoneInternational(e164: string) {
-    if (!e164.startsWith("55") || e164.length !== 13) return e164;
-
-    const ddd = e164.slice(2, 4);
-    const first = e164.slice(4, 9);
-    const last = e164.slice(9);
-
-    return `+55 (${ddd}) ${first}-${last}`;
-  }
-
   return (
-    <>
+    <div className="bg-[#FDF6EC] min-h-screen w-full">
       <Header />
-      <div className="p-6 max-w-2xl mx-auto bg-[#FDF6EC] min-h-screen">
+      <div className="p-6 max-w-2xl mx-auto w-full">
+        <Button
+          onClick={() => router.push("/dashboard")}
+          className="bg-gray-700 text-white hover:bg-gray-800 transition"
+        >
+          ← Voltar para o Dashboard
+        </Button>
+
         <h1 className="text-xl font-semibold mb-6 text-[#2D2D2D]">
           Compartilhar acesso com telefone
         </h1>
@@ -182,6 +180,6 @@ export default function SharedAccountPage() {
           </>
         )}
       </div>
-    </>
+    </div>
   );
 }

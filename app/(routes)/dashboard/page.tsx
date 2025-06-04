@@ -184,7 +184,7 @@ export default function DashboardCards() {
     percent: ((cat.amount / totalCategoryAmount) * 100).toFixed(2),
     cor: cat.color || "#999999",
   }));
-
+  console.log(me);
   return (
     <>
       <Header />
@@ -246,7 +246,7 @@ export default function DashboardCards() {
 
         <div className="flex gap-4 flex-wrap mb-4">
           <div className="flex flex-col sm:flex-row sm:items-end sm:flex-wrap gap-4 mb-6">
-            {me?.sharedWithPhones && (
+            {me?.sharedWithPhones.length > 0 && (
               <div className="flex-1 sm:flex-none">
                 <label className="text-sm font-medium block mb-1">
                   Cadastrado por:

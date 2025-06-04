@@ -9,6 +9,8 @@ import {
   Star,
   TrendingUp,
   Users,
+  Bell,
+  UsersRound,
 } from "lucide-react";
 
 const FeatureSection = () => {
@@ -49,9 +51,70 @@ const FeatureSection = () => {
       description:
         "O Dona Grana garante máxima segurança e privacidade para suas informações financeiras.",
     },
+    {
+      title: "Lembretes inteligentes no WhatsApp",
+      icon: Bell,
+      description:
+        "Seja lembrado de tomar sua creatina, pagar boletos ou até beber água. Basta pedir no WhatsApp e o Dona Grana te avisa na hora certa.",
+    },
+    {
+      title: "Conta compartilhada com a família",
+      icon: UsersRound,
+      description:
+        "Adicione familiares à sua conta e organizem juntos as finanças da casa. Cada um com seu número, mas tudo no mesmo lugar.",
+    },
   ];
+
   return (
     <>
+      <section className="w-full bg-white py-20 px-6 text-center">
+        <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-6">
+          Se Lembre do que Importa
+        </h2>
+        <p className="text-lg text-gray-700 max-w-2xl mx-auto mb-10">
+          O Dona Grana também te ajuda com lembretes personalizados. Basta
+          enviar no WhatsApp frases como:
+        </p>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto text-left">
+          <div className="bg-[#FDF6EC] p-6 rounded-xl shadow-sm">
+            <p className="text-gray-800">
+              🕔 <strong>“Me lembre de tomar creatina todo dia às 17h”</strong>
+            </p>
+          </div>
+          <div className="bg-[#FDF6EC] p-6 rounded-xl shadow-sm">
+            <p className="text-gray-800">
+              💡{" "}
+              <strong>
+                “Me avise de pagar o boleto da fatura amanhã às 10h”
+              </strong>
+            </p>
+          </div>
+          <div className="bg-[#FDF6EC] p-6 rounded-xl shadow-sm">
+            <p className="text-gray-800">
+              🥤 <strong>“Me lembre de beber água às 14h”</strong>
+            </p>
+          </div>
+          <div className="bg-[#FDF6EC] p-6 rounded-xl shadow-sm">
+            <p className="text-gray-800">
+              📅 <strong>“Reunião com Ana na segunda às 15h”</strong>
+            </p>
+          </div>
+          <div className="bg-[#FDF6EC] p-6 rounded-xl shadow-sm">
+            <p className="text-gray-800">
+              💸{" "}
+              <strong>
+                “Me avise de transferir 200 reais pro aluguel dia 5 às 8h”
+              </strong>
+            </p>
+          </div>
+        </div>
+
+        <p className="text-md text-gray-600 mt-10">
+          Lembretes direto no WhatsApp, do seu jeito. Sem app, sem complicação.
+        </p>
+      </section>
+
       <section className="w-full bg-[#2F855A] pt-20 pb-16 px-6 text-white flex flex-col items-center">
         <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-center mb-6 leading-tight">
           Visualize Suas Finanças de Forma Inteligente
