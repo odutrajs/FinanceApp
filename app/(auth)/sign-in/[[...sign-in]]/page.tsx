@@ -153,6 +153,14 @@ export default function Page() {
                   </p>
                 )}
               </div>
+              <div className="text-right">
+                <a
+                  href="/forgot-password"
+                  className="text-sm text-[#2F855A] hover:underline font-medium"
+                >
+                  Esqueceu sua senha?
+                </a>
+              </div>
 
               <button
                 type="submit"
